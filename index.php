@@ -1,5 +1,4 @@
 <?php
-
 define('IS_PRODUCTION', ($_SERVER['SERVER_NAME'] != 'localhost') || ($_SERVER['SERVER_NAME'] != 'plotlines');
 
 if (IS_PRODUCTION) 
