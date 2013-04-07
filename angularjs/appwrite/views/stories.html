@@ -1,0 +1,55 @@
+
+
+<div class="alert alert-{{flash.get().type}}" ng-show="flash.get().body"><button type="button" class="close" data-dismiss="alert">&times;</button>{{flash.get().body}}</div>
+
+<div class="row-fluid">
+    <div class="span4">
+
+        <h2>New Leaplit</h2>
+
+        <!--<div class="alert alert-success" ng-show="storyCreated"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Your story was created.</strong> Would you like to <a href="" ng-click=""><strong>begin writing</strong></a>?</div> -->
+
+        <form novalidate name="storyForm" class="story-form" ng-submit="save()">
+            <fieldset>
+                <label class="control-label" for="inputTitle">Title</label>
+                <!-- TODO comparing title to a slug won't work -->
+                <input type="text" ng-model="story.title" required unique-slug="existingIds" name="inputTitle" id="inputTitle" placeholder="Unique Title" class="input-error">
+                <span class="text-error" ng-show="storyForm.inputTitle.$error.required && storyForm.inputTitle.$dirty">Required</span>
+                <span class="text-error" ng-show="storyForm.inputTitle.$error.unique && storyForm.inputTitle.$dirty">A similar title exists.</span>
+
+                <label class="control-label" for="textareaDescription">Description</label>
+                <textarea id="textareaDescription" ng-model="story.description" placeholder="Optional Description"></textarea>
+
+                <br/>
+                <!--<label class="control-label" for="submitStory"></label>-->
+                <button name="submitStory" id="submitStory" type="submit" ng-disabled="storyForm.$invalid || isPristine()" class="btn btn-primary">Create</button>
+                <button type="button" ng-click="reset()" ng-disabled="isPristine()" class="btn">Reset</button>
+            </fieldset>
+        </form>
+    </div>
+
+    <div class="span7" ng-show="stories.length">
+        <h2>Library</h2>
+
+        <form class="form-horizontal">
+            <input type="text" ng-model="searchText" placeholder="Search">
+        </form>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><a href="" ng-click="predicate = 'title'; reverse=!reverse">Title</a></th>
+                <th><a href="" ng-click="predicate = 'description'; reverse=!reverse">Description</a></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="story in stories | orderBy:predicate:reverse | filter:searchText">
+                <td>{{story.title}}</td>
+                <td>{{story.description}}</td>
+                <td><a href="#/stories/{{story.id}}" class="btn btn-primary"><i class="icon-pencil icon-white"></i></a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

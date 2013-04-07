@@ -1,0 +1,77 @@
+
+
+<div class="alert alert-{{flash.get().type}}" ng-show="flash.get().body"><button type="button" class="close" data-dismiss="alert">&times;</button>{{flash.get().body}}</div>
+
+<h2 ng-show="! story.isEdit">
+    <a href="" class="btn btn-primary" ng-click="story.delete()"><i class="icon-remove icon-white"></i></a>
+    <a href="" class="btn btn-primary" ng-click="story.isEdit = true"><i class="icon-pencil icon-white"></i></a>
+    {{story.title}}
+    <small ng-show="story.description">
+        {{story.description}}
+    </small>
+</h2>
+
+<div ng-show="story.isEdit">
+    <h3>Story</h3>
+    <form novalidate name="editStoryForm" class="story-form" ng-submit="story.save()">
+        <fieldset>
+
+            <label class="control-label" for="inputStoryTitle">Title</label>
+            <input type="text" ng-model="story.title" required unique-slug="existingIds" name="inputStoryTitle" id="inputStoryTitle" placeholder="Unique Title" class="input-error">
+            <span class="text-error" ng-show="editStoryForm.inputStoryTitle.$error.required">Required</span>
+            <span class="text-error" ng-show="editStoryForm.inputStoryTitle.$error.unique && editStoryForm.inputStoryTitle.$dirty">A similar title exists.</span>
+
+            <label class="control-label" for="textareaStoryDescription">Description</label>
+            <textarea id="textareaStoryDescription" name="textareaStoryDescription" ng-model="story.description" placeholder="Optional Description"></textarea>
+
+            <br/>
+
+            <button name="submitStory" id="submitStory" type="submit" ng-disabled="editStoryForm.$invalid || story.isUnchanged()" class="btn btn-primary">Edit</button>
+            <button type="button" ng-click="story.reset()" ng-disabled="story.isUnchanged()" class="btn">Reset</button>
+            <button type="button" ng-click="story.isEdit=false;story.reset()" class="btn">Cancel</button>
+        </fieldset>
+    </form>
+</div>
+
+<div class="row-fluid">
+    <div class="span5" ng-show="passage.isNew() || passage.isEdit">
+        <h3 ng-show="passage.isNew()">New Passage</h3>
+        <h3 ng-show="passage.isEdit">Edit Passage</h3>
+        <form novalidate name="passageForm" class="story-form" ng-submit="passage.save()">
+            <fieldset>
+                <label class="control-label" for="inputPassageTitle">Title</label>
+                <!-- TODO if editing existing, remove the current title from the existingPassage titles as done with stories above -->
+                <input type="text" ng-model="passage.title" required unique-title="existingPassageTitles" name="inputPassageTitle" id="inputPassageTitle" placeholder="Unique Title" class="input-error">
+                <span class="text-error" ng-show="passageForm.inputPassageTitle.$error.required && passageForm.inputPassageTitle.$dirty">Required</span>
+                <span class="text-error" ng-show="passageForm.inputPassageTitle.$error.unique && passageForm.inputPassageTitle.$dirty">A similar title exists.</span>
+
+                <label class="control-label" for="textareaPassageText">Text</label>
+                <textarea id="textareaPassageText" name="textareaPassageText" ng-model="passage.text" placeholder="Text"></textarea>
+                <!--
+                <textarea id="textareaPassageText" name="textareaPassageText" ng-model="passage.text" required placeholder="Text"></textarea>
+                <span class="text-error" ng-show="passageForm.textareaPassageText.$error.required && passageForm.textareaPassageText.$dirty">Required</span> -->
+
+                <br/>
+
+                <button name="submitPassage" id="submitPassage" type="submit" ng-disabled="passageForm.$invalid || passage.isPristine()" class="btn btn-primary">Create</button>
+                <button type="button" ng-click="resetPassage()" ng-disabled="passage.isPristine()" class="btn">Reset</button>
+            </fieldset>
+
+        </form>
+    </div>
+
+    <h2 ng-show="! passage.isNew() && ! passage.isEdit">
+        <a href="" class="btn btn-primary" ng-click="passage.delete()"><i class="icon-remove icon-white"></i></a>
+        <a href="" class="btn btn-primary" ng-click="passage.isEdit = true"><i class="icon-pencil icon-white"></i></a>
+        {{passage.title}}
+        <small ng-show="passage.description">
+            {{passage.description}}
+        </small>
+    </h2>
+
+
+    <div class="span6">
+        <h3>Options</h3>
+        <p>span 6 row span 6 row span 6 row span 6 row span 6 row span 6 row span 6 row span 6 row span 6 row span 6 row span 6 row span 6 row</p>
+    </div>
+</div>
