@@ -1,10 +1,10 @@
-app.directive('uniqueSlug', function(Utils) {
+app.directive('uniqueSlug', function(utils) {
     return {
         require: 'ngModel',
         link: function(scope, elm, attrs, ctrl) {
             ctrl.$parsers.unshift(function(viewValue) {
                 var existingValues = scope[attrs.uniqueSlug];
-                if (existingValues.indexOf(Utils.slugify(viewValue)) === -1) {
+                if (existingValues.indexOf(utils.slugify(viewValue)) === -1) {
                     ctrl.$setValidity('unique', true);
                     return viewValue;
                 } else {
@@ -16,7 +16,7 @@ app.directive('uniqueSlug', function(Utils) {
     };
 });
 
-app.directive('uniqueTitle', function(Utils) {
+app.directive('uniqueTitle', function() {
     return {
         require: 'ngModel',
         link: function(scope, elm, attrs, ctrl) {

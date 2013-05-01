@@ -2,23 +2,34 @@
 <html ng-app="appwrite">
 <head>
     <title>Leaplit</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/appwrite.css" type="text/css" rel="stylesheet">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.1.3/angular.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.1.4/angular.min.js"></script>
     <script type="text/javascript" src="js/vendor/bootstrap.min.js"></script>
 
     <!-- TODO merge these with some sort of build process -->
     <script type="text/javascript" src="angularjs/appwrite/app.js"></script>
     <script type="text/javascript" src="angularjs/services/services.js"></script>
     <script type="text/javascript" src="angularjs/directives/directives.js"></script>
+    <script type="text/javascript" src="angularjs/appwrite/controllers/app.js"></script>
     <script type="text/javascript" src="angularjs/appwrite/controllers/stories.js"></script>
     <script type="text/javascript" src="angularjs/appwrite/controllers/story.js"></script>
     <script type="text/javascript" src="angularjs/appwrite/controllers/passage.js"></script>
 
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" media="screen" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
+
+
 
     <style type="text/css">
+
+        /* top padding for bootstrap fixed navbar on various screen sizes */
+        body { padding-top: 60px; }
+        @media screen and (max-width: 768px) {
+            body { padding-top: 0px; }
+        }
+
         /* Override bootstrap style that shows input error on focus for required fields. */
         input:focus:invalid:focus,
         textarea:focus:invalid:focus,
@@ -60,26 +71,62 @@
                 box-shadow:0 0 4px #0eb91c;
             }
             */
+
     </style>
 
-
+    <link href="css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
 </head>
-<body>
+<body ng-controller="AppCtrl">
 
-    <div class="container-fluid">
-        <div class="row-fluid">
-            <div class="span12">
-                <h1 class="text-center">Leaplit</h1>
-            </div>
-        </div>
+<div class="navbar navbar-fixed-top navbar-inverse">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="#">Plotlines</a>
+            <div class="nav-collapse">
+                <ul class="nav">
+                    <li class="active"><a href="#">Link</a></li>
+                    <li><a href="#">Link</a></li>
+                    <li><a href="#">Link</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="navbar-search pull-right" action="">
+                    <input type="text" class="search-query span2" placeholder="Search">
+                </form>
+            </div><!-- /.nav-collapse -->
+        </div><!-- /.container -->
+    </div><!-- /.navbar-inner -->
+</div><!-- /.navbar -->
 
-        <div class="row-fluid">
+<!-- <div class="container-fluid">
+<!--  <div class="row-fluid">-->
+<div class="container">
+
+
+            <div class="alert alert-error" ng-show="notification.routeError"><button type="button" class="close" data-dismiss="alert">&times;</button>{{notification.routeError}}</div>
+            <div class="alert alert-info" ng-show="notification.loading"><button type="button" class="close" data-dismiss="alert">&times;</button>Loading...</div>
+            <div class="alert alert-error" ng-show="error"><button type="button" class="close" data-dismiss="alert">&times;</button>{{error}}</div>
+
+
+
+        <!--  <div class="row-fluid"> -->
+        <div class="row">
             <div class="span1"><a href="">Link</a></div>
             <div class="span11">
                 <ng-view></ng-view>
             </div>
         </div>
-    </div>
+
 
 </body>
 </html>

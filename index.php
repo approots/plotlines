@@ -1,19 +1,14 @@
 <?php
-define('IS_PRODUCTION', ($_SERVER['SERVER_NAME'] != 'localhost') || ($_SERVER['SERVER_NAME'] != 'plotlines');
-
+define('IS_PRODUCTION', ($_SERVER['HTTP_HOST'] != 'localhost') && ($_SERVER['HTTP_HOST'] != 'plotlines'));
+$base_dir = 'plotlines/';
 if (IS_PRODUCTION) 
 {
-	$application = 'plotlines/application';
-	$modules = 'plotlines/modules';
-	$system = 'plotlines/system';	
+	$base_dir = '../../plotlines/';	
 }
-else
-{
-	$application = '../../plotlines/application';
-	$modules = '../../plotlines/modules';
-	$system = '../../plotlines/system';
-}
-
+$application = $base_dir . 'application';
+$modules = $base_dir . 'modules';
+$system = $base_dir . 'system';
+unset($base_dir);
 
 /**
  * The default extension of resource files. If you change this, all resources

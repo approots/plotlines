@@ -4,11 +4,13 @@ app.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
             templateUrl : 'angularjs/appwrite/views/stories.html',
-            controller : 'StoriesCtrl'
+            controller : StoriesCtrl,
+            resolve : StoriesCtrl.resolve
         })
         .when('/stories', {
             templateUrl : 'angularjs/appwrite/views/stories.html',
-            controller : 'StoriesCtrl'
+            controller : StoriesCtrl,
+            resolve : StoriesCtrl.resolve
         })
         .when('/stories/:storyId' , {
             templateUrl : 'angularjs/appwrite/views/story.html',
@@ -29,7 +31,6 @@ app.config(function ($routeProvider) {
             templateUrl : 'angularjs/appwrite/views/404.html'
         });
 });
-// TODO remove this test comment
 
 angular.module('ng').filter('cut', function () {
     return function (value, wordwise, max, tail) {
@@ -50,6 +51,7 @@ angular.module('ng').filter('cut', function () {
         return value + (tail || '...');
     };
 });
+
 
 
 

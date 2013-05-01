@@ -1,6 +1,13 @@
 
 
-<div class="alert alert-{{flash.get().type}}" ng-show="flash.get().body"><button type="button" class="close" data-dismiss="alert">&times;</button>{{flash.get().body}}</div>
+<div style="display:none" class="alert alert-success" ng-show="message" ng-animate="{show: 'fade-show', hide: 'fade-hide'}"><button type="button" class="close"  ng-click="message = null">&times;</button>{{message}}</div>
+
+    <div style="display:none" class="alert alert-error" ng-show="error" ng-animate="{show: 'fade-show', hide: 'fade-hide'}"><button type="button" class="close"  ng-click="error = null">&times;</button>{{error}}</div>
+
+
+
+<input type="button" ng-click="show()" value="Show"/>
+<input type="button" ng-click="hide()" value="Hide"/>
 
 <div class="row-fluid">
     <div class="span4">
@@ -9,11 +16,11 @@
 
         <!--<div class="alert alert-success" ng-show="storyCreated"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Your story was created.</strong> Would you like to <a href="" ng-click=""><strong>begin writing</strong></a>?</div> -->
 
-        <form novalidate name="storyForm" class="story-form" ng-submit="save()">
+        <form novalidate name="storyForm" class="story-form" ng-submit="create()">
             <fieldset>
                 <label class="control-label" for="inputTitle">Title</label>
-                <!-- TODO comparing title to a slug won't work -->
-                <input type="text" ng-model="story.title" required unique-slug="existingIds" name="inputTitle" id="inputTitle" placeholder="Unique Title" class="input-error">
+
+                <input type="text" ng-model="story.title" required unique-slug="existingSlugs" name="inputTitle" id="inputTitle" placeholder="Unique Title" class="input-error">
                 <span class="text-error" ng-show="storyForm.inputTitle.$error.required && storyForm.inputTitle.$dirty">Required</span>
                 <span class="text-error" ng-show="storyForm.inputTitle.$error.unique && storyForm.inputTitle.$dirty">A similar title exists.</span>
 
