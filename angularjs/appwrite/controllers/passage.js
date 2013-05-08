@@ -1,4 +1,4 @@
-function PassageCtrl ($scope, $routeParams, $location, Persist, Flash, Utils) {
+function PassageCtrl ($scope, $routeParams, $location, Persist, Flash, utils) {
     //localStorage.clear();
 
     $scope.story = Persist.story($routeParams.storyId);

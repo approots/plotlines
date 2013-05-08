@@ -1,20 +1,23 @@
-var app = angular.module('appwrite',[]);
+var app = angular.module('appwrite',['ui.bootstrap']);
 
-app.config(function ($routeProvider) {
+app.config(function ($routeProvider, $httpProvider) {
+    //$httpProvider.defaults.headers.post  = {'Content-Type': 'application/x-www-form-urlencoded'};
+
     $routeProvider
         .when('/', {
             templateUrl : 'angularjs/appwrite/views/stories.html',
-            controller : StoriesCtrl,
+            controller : 'StoriesCtrl',
             resolve : StoriesCtrl.resolve
         })
         .when('/stories', {
             templateUrl : 'angularjs/appwrite/views/stories.html',
-            controller : StoriesCtrl,
+            controller : 'StoriesCtrl',
             resolve : StoriesCtrl.resolve
         })
         .when('/stories/:storyId' , {
             templateUrl : 'angularjs/appwrite/views/story.html',
-            controller : 'StoryCtrl'
+            controller : 'StoryCtrl',
+            resolve : StoryCtrl.resolve
         })
         .when('/stories/:storyId/passages' , {
             templateUrl : 'angularjs/appwrite/views/passage.html',
@@ -51,6 +54,8 @@ angular.module('ng').filter('cut', function () {
         return value + (tail || '...');
     };
 });
+
+
 
 
 

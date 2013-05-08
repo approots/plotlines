@@ -4,37 +4,64 @@
  * 2. route change error
  */
 app.factory("notification", function($rootScope) {
-    var flash = null;
-    var flashHolding = null;
+    var flashHolding = [];
     var loading = false;
-    var routeError = null;
+    //var routeError = null;
+    // alert format {type:'success',message:'You done good.'}
+    var alerts = [];
 
-    // TODO: allow more than one flash message if need arises?
-    // flash alert types: error, success, info
-    var setFlash = function(message, type) {
-        flashHolding = {message:message, type:type};
+    var addFlash = function(flashAlert) {
+        flashHolding.push(flashAlert);
+    };
+    var closeAlert = function(index) {
+        alerts.splice(index, 1);
+    };
+    var addAlert = function(alertObj) {
+        alerts.push(alertObj);
+    };
+    var getAlerts = function () {
+        return alerts;
+    };
+    /*
+    var getRouteError = function () {
+        return routeError;
+    }
+    */
+    var getLoading = function () {
+        return loading;
     }
 
     $rootScope.$on("$routeChangeStart", function (event, next, current) {
+        // clear all alerts
+        alerts = [];
         loading = true;
-        routeError = null;
-        flash = flashHolding;
-        flashHolding = null;
+
+        if (flashHolding.length) {
+            alerts.push.apply(alerts, flashHolding);
+            flashHolding = [];
+        }
     });
     $rootScope.$on("$routeChangeSuccess", function (event, current, previous) {
         loading = false;
     });
     $rootScope.$on("$routeChangeError", function (event, current, previous, rejection) {
         loading = false;
-        routeError = rejection;
-        alert("ROUTE CHANGE ERROR: " + rejection);
+        // handle route errors in the resolve property of routeProvider, or in the controller?
+        //routeError = rejection;
+        //alert("ROUTE CHANGE ERROR: " + rejection);
     });
 
     return {
-        setFlash: setFlash,
-        flash: flash,
-        loading: loading,
-        routeError: routeError
+        addFlash: addFlash,
+        //getFlash: getFlash,
+
+        getLoading: getLoading,
+
+        //getRouteError: getRouteError,
+
+        getAlerts: getAlerts,
+        addAlert: addAlert,
+        closeAlert: closeAlert
     }
 });
 
@@ -73,12 +100,22 @@ app.factory("utils", function() {
                     .replace(/"/g, "&quot;")
                     .replace(/'/g, "&#039;");
             },
-            slugify : function (text) {
-                return text
-                    .toLowerCase()
-                    .replace(/[^\w ]+/g,'')
-                    .replace(/ +/g,'-')
-                    ;
+            slugify : function (str) {
+                str = str.replace(/^\s+|\s+$/g, ''); // trim
+                str = str.toLowerCase();
+
+                // remove accents, swap ñ for n, etc
+                var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+                var to   = "aaaaeeeeiiiioooouuuunc------";
+                for (var i=0, l=from.length ; i<l ; i++) {
+                    str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+                }
+
+                str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+                    .replace(/\s+/g, '-') // collapse whitespace and replace by -
+                    .replace(/-+/g, '-'); // collapse dashes
+
+                return str;
             }
         }
     });

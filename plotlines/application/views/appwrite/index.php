@@ -7,7 +7,11 @@
     <link href="css/appwrite.css" type="text/css" rel="stylesheet">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.1.4/angular.min.js"></script>
-    <script type="text/javascript" src="js/vendor/bootstrap.min.js"></script>
+    <!-- <script type="text/javascript" src="js/vendor/bootstrap.min.js"></script> -->
+    <!--  -->
+    <script type="text/javascript" src="js/vendor/ui-bootstrap-tpls-0.3.0.min.js"></script>
+
+
 
     <!-- TODO merge these with some sort of build process -->
     <script type="text/javascript" src="angularjs/appwrite/app.js"></script>
@@ -75,58 +79,61 @@
     </style>
 
     <link href="css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
+
+
 </head>
 <body ng-controller="AppCtrl">
 
-<div class="navbar navbar-fixed-top navbar-inverse">
-    <div class="navbar-inner">
-        <div class="container">
-            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </a>
-            <a class="brand" href="#">Plotlines</a>
-            <div class="nav-collapse">
-                <ul class="nav">
-                    <li class="active"><a href="#">Link</a></li>
-                    <li><a href="#">Link</a></li>
-                    <li><a href="#">Link</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                <form class="navbar-search pull-right" action="">
-                    <input type="text" class="search-query span2" placeholder="Search">
-                </form>
-            </div><!-- /.nav-collapse -->
-        </div><!-- /.container -->
-    </div><!-- /.navbar-inner -->
-</div><!-- /.navbar -->
+    <div class="navbar navbar-fixed-top navbar-inverse">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <a class="brand" href="#">Plotlines</a>
+                <div class="nav-collapse">
+                    <ul class="nav">
+                        <li class="active"><a href="#">Link</a></li>
+                        <li><a href="#">Link</a></li>
+                        <li><a href="#">Link</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <form class="navbar-search pull-right" action="">
+                        <input type="text" class="search-query span2" placeholder="Search">
+                    </form>
+                </div><!-- /.nav-collapse -->
+            </div><!-- /.container -->
+        </div><!-- /.navbar-inner -->
+    </div><!-- /.navbar -->
 
-<!-- <div class="container-fluid">
-<!--  <div class="row-fluid">-->
-<div class="container">
+    <!-- <div class="container-fluid">
+    <!--  <div class="row-fluid">-->
+    <div class="container">
 
+        <!-- Application wide alerts -->
+        <alert ng-repeat="alert in notification.getAlerts()" type="alert.type" close="notification.closeAlert($index)">{{alert.message}}</alert>
 
-            <div class="alert alert-error" ng-show="notification.routeError"><button type="button" class="close" data-dismiss="alert">&times;</button>{{notification.routeError}}</div>
-            <div class="alert alert-info" ng-show="notification.loading"><button type="button" class="close" data-dismiss="alert">&times;</button>Loading...</div>
-            <div class="alert alert-error" ng-show="error"><button type="button" class="close" data-dismiss="alert">&times;</button>{{error}}</div>
+        <!-- Page loading alert -->
+        <div class="alert alert-info" ng-show="notification.getLoading()"><button type="button" class="close" data-dismiss="alert">&times;</button>Loading...</div>
 
-
-
-        <!--  <div class="row-fluid"> -->
+<!--
         <div class="row">
             <div class="span1"><a href="">Link</a></div>
-            <div class="span11">
+            <div class="span11"> -->
                 <ng-view></ng-view>
-            </div>
-        </div>
 
+      <!--      </div>
+        </div> -->
+
+    </div>
 
 </body>
 </html>
