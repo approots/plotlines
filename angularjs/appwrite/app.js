@@ -19,13 +19,10 @@ app.config(function ($routeProvider, $httpProvider) {
             controller : 'StoryCtrl',
             resolve : StoryCtrl.resolve
         })
-        .when('/stories/:storyId/passages' , {
+        .when('/passages/:passageId' , {
             templateUrl : 'angularjs/appwrite/views/passage.html',
-            controller : 'PassageCtrl'
-        })
-        .when('/stories/:storyId/passages/:passageId' , {
-            templateUrl : 'angularjs/appwrite/views/passage.html',
-            controller : 'PassageCtrl'
+            controller : 'PassageCtrl',
+            resolve : PassageCtrl.resolve
         })
         .when('/404' , {
             templateUrl : 'angularjs/appwrite/views/404.html'

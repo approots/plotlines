@@ -1,95 +1,79 @@
-function PassageCtrl ($scope, $routeParams, $location, Persist, Flash, utils) {
-    //localStorage.clear();
+function PassageCtrl ($scope, $location, $http, utils, notification, passageResponse) {
 
-    $scope.story = Persist.story($routeParams.storyId);
-    if (! $scope.story) {
-        // Error - that story doesn't exist
-        $location.path('/404');
-    }
-    $scope.originalStory = angular.copy($scope.story); //Persist.story($routeParams.storyId);
-    $scope.story.isEdit = false;
-    // Remove this story id from existing ids since we don't want that to be a validation error.
-    $scope.existingIds = Persist.existingIds($routeParams.storyId);
+    $scope.story = passageResponse.data.story;
+    $scope.passage = passageResponse.data.passage;
+    $scope.originalPassage = angular.copy($scope.passage);
+    $scope.links = passageResponse.data.links;
+    $scope.isEditPassage = false;
 
-    $scope.passage = Persist.passage($routeParams.storyId, $routeParams.passageId);
-    if (! $scope.passage) {
-        $scope.passage = {};
-        $scope.originalPassage = {};
-    } else {
-        $scope.originalPassage = angular.copy($scope.passage);
-    }
-    $scope.passage.isEdit = false;
-    $scope.passage.isNew = function() {
-        return ($scope.passage.id) ? false : true;
-    };
-    $scope.existingPassageTitles = Persist.existingPassageTitles($routeParams.storyId, true);
-
-    $scope.story.delete = function() {
-        var message = {};
-        message.type = 'success';
-        message.body = '"' + $scope.story.title + '" has been deleted.';
-        Persist.deleteStory($scope.story.id);
-        Flash.set(message);
-        $location.path('/stories');
-    };
-
-    $scope.story.save = function() {
-        var url = "";
-        var story = Persist.saveStory($scope.story.title, $scope.story.description, $scope.originalStory);
-
-        if (story.id !== $scope.story.id) {
-
-            // redirect to update the url slug
-            var message = {};
-            message.type = 'success';
-            message.body = 'Successful update.';
-            Flash.set(message);
-
-            url = '/stories/' + story.id + '/passages';
-            if (! $scope.passage.isNew()) {
-                url += '/' + $scope.passage.id;
-            }
-
-            $location.path(url);
-        }
-
-        // Otherwise, just update the story data.
-        $scope.isEdit = false;
-        $scope.originalStory = story;
-        $scope.story = story;
-        // existingids no change
-        //$scope.existingIds = Persist.existingIds(story.id);
-    };
-
-    $scope.story.reset = function() {
-        $scope.story.title = $scope.originalStory.title;
-        $scope.story.description = $scope.originalStory.description;
-        $scope.story.id = $scope.originalStory.id;
-    };
-
-    $scope.story.isUnchanged = function() {
-        return (($scope.story.title === $scope.originalStory.title)
-            && ($scope.story.description === $scope.originalStory.description))
-    };
-
-    $scope.passage.isPristine = function() {
-        return ((! $scope.passage.title) && (!$scope.passage.text));
-    }
-
-    // Note: I can't call this passage.reset. For some reason the form only resets once.
-    // TODO we can't reset the passage when editing???!!!
     $scope.resetPassage = function() {
-        $scope.passageForm.$setPristine();
-        if ($scope.passage.isNew()) {
-            $scope.passage = {};
-        } else {
-            // set to original passage data
-            $scope.passage = angular.copy($scope.originalPassage);
-        }
-    }
+        $scope.passage.title = $scope.originalPassage.title;
+        $scope.passage.passage = $scope.originalPassage.passage;
+    };
 
-    $scope.passage.save = function() {
-        $scope.passage.id = Persist.savePassage($scope.story.id, $scope.passage);
-        $scope.passage.isEdit = false;
+    // Is the add passage form empty?
+    $scope.isPristinePassage = function() {
+        return ($scope.passage.title || $scope.passage.passage) ? false : true;
+    };
+
+    $scope.isUnchangedPassage = function() {
+        return (($scope.passage.title === $scope.originalPassage.title)
+            && ($scope.passage.passage === $scope.originalPassage.passage))
+    };
+
+    $scope.savePassage = function() {
+        $http({
+            method: 'PUT',
+            url: 'http://api.plotlines/passages',
+            data: {
+                id: $scope.passage.id,
+                title: $scope.passage.title,
+                passage: $scope.passage.passage
+            }
+        })
+        .success(function(data, status) {
+            $scope.originalPassage = angular.copy($scope.passage);
+            $scope.passage = data;
+            $scope.isEditPassage = false;
+            notification.addAlert({type:'success',message:'Saved.'});
+        })
+        .error(function(data, status){
+            notification.addAlert({type:'error',message:'Error updating the passage. ' + data});
+        });
+    };
+
+    $scope.deletePassage = function() {
+        $http({
+            method: 'DELETE',
+            url: 'http://api.plotlines/passages',
+            data: {id:$scope.passage.id}
+        })
+        .success(function(data, status) {
+            notification.addFlash({type:'success',message:'"' + $scope.passage.title + '" has been deleted.'});
+            $location.path('/stories/' + $scope.story.id);
+        })
+        .error(function(data, status){
+            notification.addAlert({type:'error',message:'Error deleting the passage. ' + data});
+        });
+    };
+
+}
+
+PassageCtrl.resolve = {
+
+    passageResponse : function($http, $route, notification) {
+
+        var id = $route.current.params.passageId;
+
+        return $http({
+            method: 'GET',
+            url: 'http://api.plotlines/passagepage/' + id
+        })
+        .success(function(data, status) {
+            //
+        })
+        .error(function(data, status){
+            notification.addAlert({type:"error", message:data})
+        });
     }
 }
