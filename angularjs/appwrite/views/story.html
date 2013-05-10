@@ -46,7 +46,7 @@
                <!-- <span class="text-error" ng-show="passageForm.inputPassageTitle.$error.unique && passageForm.inputPassageTitle.$dirty">A similar title exists.</span> -->
 
                 <label class="control-label" for="textareaPassageText">Text</label>
-                <textarea class="span5" rows="12" id="textareaPassageText" ng-model="passage.passage" placeholder=""></textarea>
+                <textarea class="span5" rows="12" id="textareaPassageText" ng-model="passage.body" placeholder=""></textarea>
 
                 <br/>
                 <!--<label class="control-label" for="submitStory"></label>-->
@@ -68,14 +68,14 @@
                 <thead>
                 <tr>
                     <th><a href="" ng-click="predicate = 'title'; reverse=!reverse">Title</a></th>
-                    <th><a href="" ng-click="predicate = 'passage'; reverse=!reverse">Text</a></th>
+                    <th><a href="" ng-click="predicate = 'body'; reverse=!reverse">Text</a></th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="passage in passages | orderBy:predicate:reverse | filter:searchText">
                     <td>{{passage.title}}</td>
-                    <td>{{passage.passage | cut:true:20}}</td>
+                    <td>{{passage.body | cut:true:20}}</td>
                     <td><a href="#/passages/{{passage.id}}" class="btn btn-primary"><i class="icon-pencil icon-white"></i></a></td>
                 </tr>
                 </tbody>

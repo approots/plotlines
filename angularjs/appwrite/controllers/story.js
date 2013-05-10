@@ -59,12 +59,12 @@ function StoryCtrl ($scope, $location, $http, utils, notification, storyResponse
 
     // Is the add passage form empty?
     $scope.isPristinePassage = function() {
-        return ($scope.passage.title || $scope.passage.passage) ? false : true;
+        return ($scope.passage.title || $scope.passage.body) ? false : true;
     }
 
     $scope.resetPassage = function() {
         $scope.passage.title = ''; //$scope.originalPassage.title;
-        $scope.passage.passage = ''; //$scope.originalPassage.text;
+        $scope.passage.body = ''; //$scope.originalPassage.text;
     };
 
     $scope.createPassage = function() {
@@ -77,7 +77,7 @@ function StoryCtrl ($scope, $location, $http, utils, notification, storyResponse
             {
                 storyId: $scope.story.id,
                 title: $scope.passage.title, // slug made on server-side from title
-                passage: $scope.passage.passage
+                passage: $scope.passage.body
             }
         })
         .success(function(data, status) {

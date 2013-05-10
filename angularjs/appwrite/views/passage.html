@@ -8,69 +8,104 @@
 </h2>
 
 
+
+
+<div ng-show="! isEditPassage" class="well">
+    <a href="" class="btn btn-primary" ng-click="deletePassage()"><i class="icon-remove icon-white"></i></a>
+    <a href="" class="btn btn-primary" ng-click="isEditPassage = true"><i class="icon-pencil icon-white"></i></a>
+    <h2>
+
+        {{passage.title}}
+    </h2>
+    {{passage.body}}
+</div>
+
+<!-- TODO text editor many possibilites.
+If html use Redactor. html entered is escaped and only html inserted by buttons isn't. Use HTMLPurifier.
+
+If markdown use pagedown, but with a trick to escape all html. To do so, don't use the pagedown sanitizer for
+the preview. Instead leverage the browser to escape html by using the textarea trick:
+(http://stackoverflow.com/questions/5499078/fastest-method-to-escape-html-tags-as-html-entities) before the
+markdown conversion on the client side. For the server-side, send the text as-is (markdown + unescaped html).
+Save the unaltered version. Either convert before display (preferable) or, if performance is a concern,
+save another converted version. Either way, htmlspecialchars($str, ENT_NOQUOTES); it first, then convert
+the markdown to html.
+-->
+<div ng-show="isEditPassage" class="well">
+    <h3>Edit Passage</h3>
+
+    <!--<div class="alert alert-success" ng-show="storyCreated"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Your story was created.</strong> Would you like to <a href="" ng-click=""><strong>begin writing</strong></a>?</div> -->
+
+    <form novalidate name="passageForm" class="passage-form" ng-submit="savePassage()">
+        <fieldset>
+            <label class="control-label" for="inputPassageTitle">
+                Title
+                <span class="text-error" ng-show="passageForm.inputPassageTitle.$error.required && passageForm.inputPassageTitle.$dirty">Required</span>
+            </label>
+
+            <input type="text" class="input-error span5" ng-model="passage.title" required name="inputPassageTitle" id="inputPassageTitle" placeholder="Unique Title">
+
+            <!-- <span class="text-error" ng-show="passageForm.inputPassageTitle.$error.unique && passageForm.inputPassageTitle.$dirty">A similar title exists.</span> -->
+
+            <label class="control-label" for="textareaPassageText">Text</label>
+            <textarea class="span5" rows="12" id="textareaPassageText" ng-model="passage.body" placeholder=""></textarea>
+
+            <br/>
+            <!--<label class="control-label" for="submitStory"></label>-->
+            <button name="submitPassage" id="submitPassage" type="submit" ng-disabled="passageForm.$invalid || isUnchangedPassage()" class="btn btn-primary">Edit</button>
+            <button type="button" ng-click="resetPassage()" ng-disabled="isUnchangedPassage()" class="btn">Reset</button>
+            <button type="button" ng-click="isEditPassage=false;resetPassage()" class="btn">Cancel</button>
+        </fieldset>
+    </form>
+</div>
+
 <div class="row">
-    <div class="span6">
+    <div class="span5">
+        <div class="well">
+            <h3>New Option</h3>
 
-        <div ng-show="! isEditPassage">
-            <h2>
-                <a href="" class="btn btn-primary" ng-click="deletePassage()"><i class="icon-remove icon-white"></i></a>
-                <a href="" class="btn btn-primary" ng-click="isEditPassage = true"><i class="icon-pencil icon-white"></i></a>
-                {{passage.title}}
-            </h2>
-            {{passage.passage}}
-        </div>
-
-        <div ng-show="isEditPassage">
-            <h3>Edit Passage</h3>
-
-            <!--<div class="alert alert-success" ng-show="storyCreated"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Your story was created.</strong> Would you like to <a href="" ng-click=""><strong>begin writing</strong></a>?</div> -->
-
-            <form novalidate name="passageForm" class="passage-form" ng-submit="savePassage()">
+            <form novalidate name="linkForm" class="link-form" ng-submit="createLink()">
                 <fieldset>
-                    <label class="control-label" for="inputPassageTitle">Title</label>
+                    <label class="control-label" for="inputLinkChoice">
+                        Option
+                        <span class="text-error" ng-show="linkForm.inputLinkChoice.$error.required && linkForm.inputLinkChoice.$dirty">Required</span>
+                    </label>
 
-                    <input type="text" class="input-error span5" ng-model="passage.title" required name="inputPassageTitle" id="inputPassageTitle" placeholder="Unique Title">
-                    <span class="text-error" ng-show="passageForm.inputPassageTitle.$error.required && passageForm.inputPassageTitle.$dirty">Required</span>
+                    <input type="text" class="input-error span4" ng-model="link.choice" required name="inputLinkChoice" id="inputLinkChoice" placeholder="">
                     <!-- <span class="text-error" ng-show="passageForm.inputPassageTitle.$error.unique && passageForm.inputPassageTitle.$dirty">A similar title exists.</span> -->
-
-                    <label class="control-label" for="textareaPassageText">Text</label>
-                    <textarea class="span5" rows="12" id="textareaPassageText" ng-model="passage.passage" placeholder=""></textarea>
-
                     <br/>
                     <!--<label class="control-label" for="submitStory"></label>-->
-                    <button name="submitPassage" id="submitPassage" type="submit" ng-disabled="passageForm.$invalid || isUnchangedPassage()" class="btn btn-primary">Edit</button>
-                    <button type="button" ng-click="resetPassage()" ng-disabled="isUnchangedPassage()" class="btn">Reset</button>
-                    <button type="button" ng-click="isEditPassage=false;resetPassage()" class="btn">Cancel</button>
+                    <button name="submitLink" id="submitLink" type="submit" ng-disabled="linkForm.$invalid || isPristineLink()" class="btn btn-primary">Create</button>
+                    <button type="button" ng-click="resetLink()" ng-disabled="isPristineLink()" class="btn">Reset</button>
                 </fieldset>
             </form>
         </div>
     </div>
+    <div class="span7">
+        <div class="well">
+            <div ng-show="links.length">
 
-    <div class="span6">
-        <div ng-show="passages.length">
+                <h3>Options</h3>
 
-            <h3>Passages</h3>
+                <form class="form-horizontal">
+                    <input type="text" ng-model="searchText" placeholder="Search">
+                </form>
 
-            <form class="form-horizontal">
-                <input type="text" ng-model="searchText" placeholder="Search">
-            </form>
-
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th><a href="" ng-click="predicate = 'title'; reverse=!reverse">Title</a></th>
-                    <th><a href="" ng-click="predicate = 'text'; reverse=!reverse">Text</a></th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="passage in passages | orderBy:predicate:reverse | filter:searchText">
-                    <td>{{passage.title}}</td>
-                    <td>{{passage.text | cut:true:20}}</td>
-                    <td><a href="#/stories/{{story.id}}/passages/{{passage.id}}" class="btn btn-primary"><i class="icon-pencil icon-white"></i></a></td>
-                </tr>
-                </tbody>
-            </table>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th><a href="" ng-click="predicate = 'title'; reverse=!reverse">Option</a></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="link in links | orderBy:predicate:reverse | filter:searchText">
+                        <td>{{link.choice}}</td>
+                        <td><a href="#" class="btn btn-primary"><i class="icon-pencil icon-white"></i></a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

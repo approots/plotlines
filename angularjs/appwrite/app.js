@@ -1,3 +1,4 @@
+
 var app = angular.module('appwrite',['ui.bootstrap']);
 
 app.config(function ($routeProvider, $httpProvider) {
