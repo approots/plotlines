@@ -1,6 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 // -- Environment setup --------------------------------------------------------
+define('IS_PRODUCTION', (($_SERVER['HTTP_HOST'] !== 'localhost') && ($_SERVER['HTTP_HOST'] !== 'plotlines')));
 
 // Load the core Kohana class
 require SYSPATH.'classes/Kohana/Core'.EXT;
@@ -64,7 +65,6 @@ ini_set('unserialize_callback_func', 'spl_autoload_call');
 I18n::lang('en-us');
 Cookie::$salt = 'fdjl32iu4rwlmml223khwdnwl32l3jk2';
 
-
 /**
  * Set Kohana::$environment if a 'KOHANA_ENV' environment variable has been supplied.
  *
@@ -73,7 +73,11 @@ Cookie::$salt = 'fdjl32iu4rwlmml223khwdnwl32l3jk2';
  */
 if (isset($_SERVER['KOHANA_ENV']))
 {
-	Kohana::$environment = constant('Kohana::'.strtoupper($_SERVER['KOHANA_ENV']));
+    Kohana::$environment = constant('Kohana::'.strtoupper($_SERVER['KOHANA_ENV']));
+}
+else
+{
+    Kohana::$environment = (IS_PRODUCTION) ? Kohana::PRODUCTION : Kohana::DEVELOPMENT;
 }
 
 /**
@@ -124,6 +128,7 @@ Kohana::modules(array(
  * Set the routes. Each route must have a minimum of a name, a URI and a set of
  * defaults for the URI.
  */
+
 Route::set('default', '(<controller>(/<action>(/<id>)))')
 	->defaults(array(
 		'controller' => 'welcome',

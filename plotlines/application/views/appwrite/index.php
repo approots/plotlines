@@ -34,7 +34,13 @@
             body { padding-top: 0px; }
         }
 
-        /* Override bootstrap style that shows input error on focus for required fields. */
+        input {
+            max-width: 100%;
+        }
+
+        .table th.text-right, .table td.text-right { text-align: right; }
+
+            /* Override bootstrap style that shows input error on focus for required fields. */
         input:focus:invalid:focus,
         textarea:focus:invalid:focus,
         select:focus:invalid:focus {

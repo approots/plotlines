@@ -77,7 +77,7 @@ function StoryCtrl ($scope, $location, $http, utils, notification, storyResponse
             {
                 storyId: $scope.story.id,
                 title: $scope.passage.title, // slug made on server-side from title
-                passage: $scope.passage.body
+                body: $scope.passage.body
             }
         })
         .success(function(data, status) {

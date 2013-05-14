@@ -76,7 +76,7 @@
                 <tr ng-repeat="passage in passages | orderBy:predicate:reverse | filter:searchText">
                     <td>{{passage.title}}</td>
                     <td>{{passage.body | cut:true:20}}</td>
-                    <td><a href="#/passages/{{passage.id}}" class="btn btn-primary"><i class="icon-pencil icon-white"></i></a></td>
+                    <td class="text-right"><a href="#/passages/{{passage.id}}" class="btn btn-primary"><i class="icon-pencil icon-white"></i></a></td>
                 </tr>
                 </tbody>
             </table>

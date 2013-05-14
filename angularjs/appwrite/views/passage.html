@@ -59,6 +59,7 @@ the markdown to html.
     </form>
 </div>
 
+
 <div class="row">
     <div class="span5">
         <div class="well">
@@ -71,7 +72,16 @@ the markdown to html.
                         <span class="text-error" ng-show="linkForm.inputLinkChoice.$error.required && linkForm.inputLinkChoice.$dirty">Required</span>
                     </label>
 
-                    <input type="text" class="input-error span4" ng-model="link.choice" required name="inputLinkChoice" id="inputLinkChoice" placeholder="">
+                    <input type="text" class="input-error input-block-level" ng-model="link.choice" required name="inputLinkChoice" id="inputLinkChoice" placeholder="">
+
+                    <label class="control-label" for="inputLinkDestination">
+                        Link to Passage
+                        <span class="text-error" ng-show="linkForm.inputLinkDestination.$error.required && linkForm.inputLinkDestination.$dirty">Required</span>
+                    </label>
+                    <!--  <pre>Model: {{link.destination | json}}</pre> -->
+                 <!-- TODO make directive to check that input is a valid passage destination -->
+                        <input type="text" class="input-block-level" name="inputLinkDestination" id="inputLinkDestination" ng-model="link.destination" typeahead="passage as passage.title for passage in passages | filter:{title: $viewValue}" placeholder="Passage name">
+
                     <!-- <span class="text-error" ng-show="passageForm.inputPassageTitle.$error.unique && passageForm.inputPassageTitle.$dirty">A similar title exists.</span> -->
                     <br/>
                     <!--<label class="control-label" for="submitStory"></label>-->
@@ -101,7 +111,7 @@ the markdown to html.
                     <tbody>
                     <tr ng-repeat="link in links | orderBy:predicate:reverse | filter:searchText">
                         <td>{{link.choice}}</td>
-                        <td><a href="#" class="btn btn-primary"><i class="icon-pencil icon-white"></i></a></td>
+                        <td class="text-right"><a href="#" class="btn btn-primary"><i class="icon-pencil icon-white"></i></a></td>
                     </tr>
                     </tbody>
                 </table>
@@ -109,3 +119,5 @@ the markdown to html.
         </div>
     </div>
 </div>
+
+

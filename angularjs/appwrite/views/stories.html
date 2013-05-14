@@ -54,7 +54,7 @@
             <tr ng-repeat="story in stories | orderBy:predicate:reverse | filter:searchText">
                 <td>{{story.title}}</td>
                 <td>{{story.description}}</td>
-                <td><a href="#/stories/{{story.id}}" class="btn btn-primary"><i class="icon-pencil icon-white"></i></a></td>
+                <td class="text-right"><a href="#/stories/{{story.id}}" class="btn btn-primary"><i class="icon-pencil icon-white"></i></a></td>
             </tr>
             </tbody>
         </table>
