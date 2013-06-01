@@ -165,7 +165,16 @@ app.directive('graph', function(graph){
                 .append("svg:path")
                 .attr("d", "M0,-5L10,0L0,5");
 
+            var force = d3.layout.force()
+                //.nodes(data.nodes)
+                //.links(data.links)
+                .gravity(.2)
+                .charge(-400)
+                .linkDistance(70)
+                .size([width, height]);
 
+            var nodes = force.nodes();
+            var links = force.links();
 
             function scale() {
                 svg.attr("transform","translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
@@ -194,79 +203,91 @@ app.directive('graph', function(graph){
                 }
             }
 
-            console.log('in graph directive');
-            scope.$watch('data', function(data) {
-                if (data) {
-                    console.log('in graph directive event');
-                    var link, node, nodeContainer;
+            function update() {
+                var link, node, nodeContainer;
 
-                    // Start could be done elsewhere...
-                    // Create a node map for node lookup - this could be done on the server.
+                link = svg.selectAll("line.link")
+                    .data(links, function(d) { return d.source.id + "-" + d.target.id; });
+                link.enter().insert("line")
+                    .attr("class", function(d) { return "link " + d.type; })
+                    .attr("marker-end", function(d) { return "url(#" + d.type + ")"; });;
+                link.exit().remove();
+
+                node = svg.selectAll("g.node")
+                    .data(nodes, function(d) { return d.id;});
+                nodeContainer = node.enter().append("g")
+                    .attr("class", "node")
+                    .call(force.drag)
+                    .on("click", click)
+                    .call(d3.helper.tooltip()
+                        // todo figure out how to add an attribute class instead.
+                        .style({display:'block',background:'rgba(0, 0, 0, 0.5)',color:'white',padding:'10px'})
+                        .text(function(d, i){ return d.title; })
+                    );
+                nodeContainer.append("circle")
+                    //.style("fill", function(d) { return d.color; })
+                    .attr("class", function(d) { return "circle " + d.color; })
+                    .attr("r", 6);
+                nodeContainer.append("text")
+                    .attr("x", 10)
+                    .attr("y", ".31em")
+                    .attr("class", "shadow")
+                    .text(function(d) { return d.title; });
+                nodeContainer.append("text")
+                    .attr("x", 10)
+                    .attr("y", ".31em")
+                    .attr("class", "toptext")
+                    .text(function(d) { return d.title; });
+                node.exit().remove();
+
+                force.on("tick", function() {
+                    link.attr("x1", function(d) { return d.source.x; })
+                        .attr("y1", function(d) { return d.source.y; })
+                        .attr("x2", function(d) { return d.target.x; })
+                        .attr("y2", function(d) { return d.target.y; });
+
+                    node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+                });
+                force.start();
+            }
+
+            // Start could be done elsewhere...
+            // Create a node map for node lookup - this could be done on the server.
+            /*
+            var nodeMap = {};
+
+            data.nodes.forEach(function(node) { nodeMap[node.id] = node; });
+            // For each link, add a reference to the source and the target node.
+            data.links.forEach(function(link) {
+                link.source = nodeMap[link.source];
+                link.target = nodeMap[link.target];
+            });
+            // ...End could be done elsewhere
+            */
+
+
+
+            console.log('in graph directive');
+            scope.$watch('data', function(scopeData) {
+                if (scopeData) {
+
                     var nodeMap = {};
-                    data.nodes.forEach(function(node) { nodeMap[node.id] = node; });
+                    data = angular.copy(scopeData);
+
+                    data.nodes.forEach(function(node) {
+                        nodeMap[node.id] = node;
+                        nodes.push(node);
+                    });
                     // For each link, add a reference to the source and the target node.
                     data.links.forEach(function(link) {
                         link.source = nodeMap[link.source];
                         link.target = nodeMap[link.target];
+                        links.push(link);
                     });
-                    // ...End could be done elsewhere
 
-                    var force = d3.layout.force()
-                        .nodes(data.nodes)
-                        .links(data.links)
-                        .gravity(.2)
-                        .charge(-400)
-                        .linkDistance(70)
-                        .size([width, height]);
-
-                    var nodes = force.nodes();
-                    var links = force.links();
-
-                    var link, node, nodeContainer;
-
-                    link = svg.selectAll("line.link")
-                        .data(links, function(d) { return d.source.id + "-" + d.target.id; });
-                    link.enter().insert("line")
-                        .attr("class", function(d) { return "link " + d.type; })
-                        .attr("marker-end", function(d) { return "url(#" + d.type + ")"; });;
-                    link.exit().remove();
-
-                    node = svg.selectAll("g.node")
-                        .data(nodes, function(d) { return d.id;});
-                    nodeContainer = node.enter().append("g")
-                        .attr("class", "node")
-                        .call(force.drag)
-                        .on("click", click)
-                        .call(d3.helper.tooltip()
-                            // todo figure out how to add an attribute class instead.
-                            .style({display:'block',background:'rgba(0, 0, 0, 0.5)',color:'white',padding:'10px'})
-                            .text(function(d, i){ return d.title; })
-                        );
-                    nodeContainer.append("circle")
-                        //.style("fill", function(d) { return d.color; })
-                        .attr("class", function(d) { return "circle " + d.color; })
-                        .attr("r", 6);
-                    nodeContainer.append("text")
-                        .attr("x", 10)
-                        .attr("y", ".31em")
-                        .attr("class", "shadow")
-                        .text(function(d) { return d.title; });
-                    nodeContainer.append("text")
-                        .attr("x", 10)
-                        .attr("y", ".31em")
-                        .attr("class", "toptext")
-                        .text(function(d) { return d.title; });
-                    node.exit().remove();
-
-                    force.on("tick", function() {
-                        link.attr("x1", function(d) { return d.source.x; })
-                            .attr("y1", function(d) { return d.source.y; })
-                            .attr("x2", function(d) { return d.target.x; })
-                            .attr("y2", function(d) { return d.target.y; });
-
-                        node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
-                    });
-                    force.start();
+                    console.log(nodes);
+                    console.log(links);
+                    update();
                 }
             });
         } // end link
