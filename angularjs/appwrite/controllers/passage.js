@@ -91,9 +91,34 @@ function PassageCtrl ($scope, $location, $http, utils, notification, passageResp
             //var url = '/passages/' + data.id;
             //$location.path(url);
             notification.addAlert({type:'success',message:'Saved.'});
+            // Add new link to the list.
+            $scope.links.push(data);
         })
         .error(function(data, status){
             notification.addAlert({type:'error',message:'Error creating the option. ' + data});
+        });
+    };
+
+    $scope.deleteLink = function(id) {
+        $http({
+            method: 'DELETE',
+            url: 'http://api.plotlines/links',
+            data: {id:id}
+        })
+        .success(function(data, status) {
+            //$scope.links = data;
+            notification.addAlert({type:'success',message:'Deleted.'});
+            // update the links to remove this one
+            var pos = $scope.links.map(function(obj) { return obj.id; }).indexOf(id);
+            $scope.links.splice(pos, 1);
+                /*
+            angular.forEach(stories, function(value, key){
+                temp.push(value);
+            });
+            */
+        })
+        .error(function(data, status){
+            notification.addAlert({type:'error',message:'Error deleting the option. ' + data});
         });
     };
 

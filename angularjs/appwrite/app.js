@@ -25,6 +25,11 @@ app.config(function ($routeProvider, $httpProvider) {
             controller : 'PassageCtrl',
             resolve : PassageCtrl.resolve
         })
+        .when('/test' , {
+            templateUrl : 'angularjs/appwrite/views/test.html',
+            controller : 'TestCtrl',
+            resolve : TestCtrl.resolve
+        })
         .when('/404' , {
             templateUrl : 'angularjs/appwrite/views/404.html'
         })

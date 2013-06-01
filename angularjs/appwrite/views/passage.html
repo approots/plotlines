@@ -97,21 +97,22 @@ the markdown to html.
 
                 <h3>Options</h3>
 
-                <form class="form-horizontal">
-                    <input type="text" ng-model="searchText" placeholder="Search">
-                </form>
-
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th><a href="" ng-click="predicate = 'title'; reverse=!reverse">Option</a></th>
+                        <th><a href="" ng-click="predicate = 'choice'; reverse=!reverse">Option</a></th>
+                        <th><a href="" ng-click="predicate = 'destination'; reverse=!reverse">Link</a></th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="link in links | orderBy:predicate:reverse | filter:searchText">
+                    <tr ng-repeat="link in links | orderBy:predicate:reverse">
                         <td>{{link.choice}}</td>
-                        <td class="text-right"><a href="#" class="btn btn-primary"><i class="icon-pencil icon-white"></i></a></td>
+                        <td>{{link.destination}}</td>
+                        <td class="text-right">
+                            <a href="" class="btn btn-primary" ng-click=""><i class="icon-pencil icon-white"></i></a>
+                            <a href="" class="btn btn-primary" ng-click="deleteLink(link.id)"><i class="icon-remove icon-white"></i></a>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

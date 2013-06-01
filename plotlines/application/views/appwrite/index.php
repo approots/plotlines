@@ -5,13 +5,26 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="css/appwrite.css" type="text/css" rel="stylesheet">
+
+
+
+
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.1.4/angular.min.js"></script>
     <!-- <script type="text/javascript" src="js/vendor/bootstrap.min.js"></script> -->
     <!--  -->
     <script type="text/javascript" src="js/vendor/ui-bootstrap-tpls-0.3.0.min.js"></script>
 
-
+    <!--
+    <script src="http://tinymce.cachefly.net/4.0/tinymce.min.js"></script>
+    <script>
+        tinymce.init({selector:'textarea'});
+    </script>
+    -->
+    <!-- D3js -->
+    <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?1.29.1"></script>
+    <script type="text/javascript" src="js/vendor/d3.tooltip.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/graph.css" media="screen" />
 
     <!-- TODO merge these with some sort of build process -->
     <script type="text/javascript" src="angularjs/appwrite/app.js"></script>
@@ -21,10 +34,15 @@
     <script type="text/javascript" src="angularjs/appwrite/controllers/stories.js"></script>
     <script type="text/javascript" src="angularjs/appwrite/controllers/story.js"></script>
     <script type="text/javascript" src="angularjs/appwrite/controllers/passage.js"></script>
+    <script type="text/javascript" src="angularjs/appwrite/controllers/test.js"></script>
+
+
 
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" media="screen" />
 
-
+    <!-- redactor wysiwyg -->
+    <link href="css/redactor.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="js/vendor/redactor.js"></script>
 
     <style type="text/css">
 

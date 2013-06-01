@@ -1,3 +1,23 @@
+app.factory("graph", function() {
+    var data;
+    var setData = function(d) {
+        data = d;
+        this.event = true;
+    }
+
+    var getData = function() {
+        this.event = false;
+        return data;
+    }
+
+    return {
+        //
+        event : false,
+        setData : setData,
+        getData : getData
+    }
+});
+
 /**
  * types of notifications:
  * 1. flash

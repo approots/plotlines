@@ -7,7 +7,7 @@ function StoryCtrl ($scope, $location, $http, utils, notification, storyResponse
     $scope.otherSlugs = storyResponse.data.otherSlugs;
 
     $scope.passages = storyResponse.data.passages;
-    $scope.passage = {title:'', passage: ''};
+    $scope.passage = {title:'', body: ''};
     //$scope.originalPassage = angular.copy($scope.passage);
 
     $scope.deleteStory = function() {
