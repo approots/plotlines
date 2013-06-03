@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="appwrite">
 <head>
-    <title>Leaplit</title>
+    <title>Plotlines</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="css/appwrite.css" type="text/css" rel="stylesheet">
@@ -116,6 +116,12 @@
         .floatLeftMedia.p {
             float:left;
             padding: 0 5px 5px 0;
+        }
+
+        #passage-list {
+            /* NOTE same height as the passage-graph div beside it. */
+            height:480px;
+            overflow: auto;
         }
 
             /*
