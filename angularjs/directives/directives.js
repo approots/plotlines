@@ -388,6 +388,7 @@ app.directive('graph', function(graph){
                     // TODO refactor - use css classes
 
 
+                    
                     var node = d3.select(this);
                    // console.log(node.select("text").property("id"));
 /*
