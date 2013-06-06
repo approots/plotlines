@@ -22,7 +22,7 @@
     </script>
     -->
     <!-- D3js -->
-    <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?1.29.1"></script>
+    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
     <script type="text/javascript" src="js/vendor/d3.tooltip.js"></script>
     <link rel="stylesheet" type="text/css" href="css/graph.css" media="screen" />
 
@@ -43,6 +43,7 @@
     <!-- redactor wysiwyg -->
     <link href="css/redactor.css" type="text/css" rel="stylesheet">
     <script type="text/javascript" src="js/vendor/redactor.js"></script>
+
 
     <style type="text/css">
 
@@ -120,10 +121,51 @@
 
         #passage-list {
             /* NOTE same height as the passage-graph div beside it. */
-            height:480px;
+            /*height:480px;*/
+        }
+        /* NOTE height of tbody and other content in #passage-list should equal height of passage-graph beside. */
+/*
+        #passage-list-table {
+            height: 430px;
             overflow: auto;
         }
+*/
+        h3.up {
+            margin-top: -7px;
+        }
 
+        #passage-list-table {
+
+        }
+
+        .bs-docs-example {
+            position: relative;
+            margin: 15px 0;
+            padding: 39px 19px 14px;
+            *padding-top: 19px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+        }
+
+            /* Echo out a label for the example */
+        .bs-docs-example:after {
+            content: "Example";
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            padding: 3px 7px;
+            font-size: 12px;
+            font-weight: bold;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            color: #9da0a4;
+            -webkit-border-radius: 4px 0 4px 0;
+            -moz-border-radius: 4px 0 4px 0;
+            border-radius: 4px 0 4px 0;
+        }
             /*
             .story-form input.ng-valid.ng-dirty {
                 outline:none;
@@ -165,10 +207,10 @@
                     <form class="navbar-search pull-right" action="">
                         <input type="text" class="search-query span2" placeholder="Search">
                     </form>
-                </div><!-- /.nav-collapse -->
-            </div><!-- /.container -->
-        </div><!-- /.navbar-inner -->
-    </div><!-- /.navbar -->
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- <div class="container-fluid">
     <!--  <div class="row-fluid">-->

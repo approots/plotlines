@@ -340,7 +340,7 @@ app.directive('graph', function(graph){
             data : '='
         },
         link : function (scope,element) {
-console.log(element);
+
 
             var graph = (function() {
 
@@ -382,61 +382,100 @@ console.log(element);
                 function scale() {
                     svg.attr("transform","translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
                 }
+
+
                 function click() {
                     // TODO refactor - use css classes
-                    var selected = d3.select(this).select("circle").attr("class");
-                    if (selected === "selected") {
-                        d3.select(this).select(".toptext").style("fill", "#000");
 
-                        d3.select(this).select("circle")
-                            .style("fill", "#ccc")
-                            .attr("class",""); // use remove class here
-                    } else {
-                        // revert existing selection to default
-                        d3.selectAll(".toptext").style("fill", "#000");
-                        d3.selectAll("circle").style("fill", "#ccc");
 
-                        // highlight current selection
-                        //var textNodes = d3.select(this).selectAll("text");
-                        d3.select(this).select(".toptext").style("fill", "steelblue");
+                    var node = d3.select(this);
+                   // console.log(node.select("text").property("id"));
+/*
+                    scope.$apply(function () {
+                        scope.currentPassage = node.select("text").property("id");
+                    });
+*/
+                    // unselect and unhighlight any other node
+                    var selectedNode = d3.select("g.node.selected");
+                    selectedNode.classed("selected", false);
+                    unhighlight(selectedNode, 0);
+                    //allNodes.each(unhighlight);
 
-                        d3.select(this).select("circle")
-                            .style("fill", "steelblue")
-                            .attr("class","selected");
+
+                    // select this class
+                    node.classed("selected", true);
+                    // already highlighted by mouseover event, so the user knows it's selected.
+
+                    // todo let our controller code know
+                    /*
+                    scope.$apply(function () {
+                        scope.currentPassage = node.select("text").property("id");
+                    });
+                    */
+
+                }
+
+                function mouseover() {
+
+                    var node = d3.select(this);
+                    // if already selected, no need to highlight
+                    if (node.attr("class").indexOf("selected") === -1) {
+                        highlight(node);
+                    }
+
+                }
+
+                function mouseout() {
+
+                    var node = d3.select(this);
+                    // if selected, then don't unhighlight
+                    if (node.attr("class").indexOf("selected") === -1) {
+                        unhighlight(node);
                     }
                 }
 
                 function update() {
-                    var link, node, nodeContainer;
+                    var link, node, newNodes;
 
                     link = svg.selectAll("line.link")
                         .data(links, function(d) { return d.source.id + "-" + d.target.id; });
                     link.enter().insert("line")
                         .attr("class", function(d) { return "link " + d.type; })
-                        .attr("marker-end", function(d) { return "url(#" + d.type + ")"; });;
+                        .attr("marker-end", function(d) { return "url(#" + d.type + ")"; });
                     link.exit().remove();
 
                     node = svg.selectAll("g.node")
-                        .data(nodes, function(d) { return d.id;});
-                    nodeContainer = node.enter().append("g")
+                        // Important: .data() adds all nodes, but the existing nodes are not overwritten, but kept for
+                        // reference. In append(), new nodes that were not existing nodes are added. In exit(),
+                        // existing nodes that were not in the new nodes passed into .data() are deleted.
+                        .data(nodes, function(d) { return d.id; });
+
+
+                    newNodes = node.enter().append("g")
                         .attr("class", "node")
+                        .attr("id", function(d) { return "node-" + d.id})
                         .call(force.drag)
+
+                        .on("mouseover", mouseover)
+                        .on("mouseout", mouseout)
                         .on("click", click)
                         .call(d3.helper.tooltip()
                             // todo figure out how to add an attribute class instead.
                             .style({display:'block',background:'rgba(0, 0, 0, 0.5)',color:'white',padding:'10px'})
                             .text(function(d, i){ return d.title; })
                         );
-                    nodeContainer.append("circle")
+                    newNodes.append("circle")
                         //.style("fill", function(d) { return d.color; })
-                        .attr("class", function(d) { return "circle " + d.color; })
+                        // todo add logic for color and highlight instead of blindly adding classes that don't exist
+                        .attr("class", function(d) { return "circle " + d.color})
                         .attr("r", 6);
-                    nodeContainer.append("text")
+                    newNodes.append("text")
+                        .attr("id", function(d) { return d.id; })
                         .attr("x", 10)
                         .attr("y", ".31em")
                         .attr("class", "shadow")
                         .text(function(d) { return d.title; });
-                    nodeContainer.append("text")
+                    newNodes.append("text")
                         .attr("x", 10)
                         .attr("y", ".31em")
                         .attr("class", "toptext")
@@ -455,6 +494,7 @@ console.log(element);
                 }
 
                 function addData(data) {
+
                     var nodeMap = {};
 
                     data.nodes.forEach(function(node) {
@@ -462,6 +502,7 @@ console.log(element);
                         nodes.push(node);
                     });
                     // For each link, add a reference to the source and the target node.
+                    // TODO this won't work if the node linked to doesn't exist in the new data!
                     data.links.forEach(function(link) {
                         link.source = nodeMap[link.source];
                         link.target = nodeMap[link.target];
@@ -478,9 +519,77 @@ console.log(element);
                     });
                 }
 
+                function updateData(data) {
+                    data.nodes.forEach(function (node) {
+                        if (node.id) {
+                            highlight(d3.select("#node-" + node.id));
+                                //.attr("class", "circle highlight");
+                        }
+                    });
+                }
+
+                function highlight(node, duration) {
+                    duration = (duration || 300);
+                    var circle = node.select("circle");
+                    var text = node.select(".toptext");
+                    var shadow = node.select("text");
+
+                    circle
+                        //.classed("highlight", true)
+                        .transition()
+                        .duration(duration)
+                        .style("stroke-width", "7px")
+                        /*
+                        .style("stroke", function() {
+                            var stroke = d3.select(this).style("stroke");
+                            return (stroke === "#aaaaaa") ? stroke : d3.rgb(stroke).brighter(1);
+                        })
+                        */
+                        .attr("r", 9);
+                    text
+                        .transition()
+                        .duration(duration)
+                        .style("font-size", "11px")
+                        .style("fill", "#2d6987");
+                    shadow
+                        .transition()
+                        .duration(duration)
+                        .style("font-size", "11px");
+                }
+
+                function unhighlight(node, duration) {
+
+                    duration = (duration || 300);
+                    var circle = node.select("circle");
+                    var text = node.select(".toptext");
+                    var shadow = node.select("text");
+
+                    circle
+                        //.classed("highlight", false)
+                        .transition()
+                        .duration(duration)
+                        .style("stroke-width", "4px")
+                        /*
+                        .style("stroke", function() {
+                            var stroke = d3.select(this).style("stroke");
+                            return (stroke === "#aaaaaa") ? stroke : d3.rgb(stroke).darker(1);
+                        })
+                        */
+                        .attr("r", 6);
+                    text
+                        .transition()
+                        .duration(duration)
+                        .style("font-size", "8px")
+                        .style("fill", "#000");
+                    shadow
+                        .transition()
+                        .duration(duration)
+                        .style("font-size", "8px");
+                }
                 return {
                     addData : addData,
-                    removeData : removeData
+                    removeData : removeData,
+                    updateData : updateData
                 }
             }());
 
@@ -489,6 +598,7 @@ console.log(element);
                     switch (data.getAction() ) {
                         case 'add' : graph.addData(data.getData()); break;
                         case 'remove' : graph.removeData(data.getData()); break;
+                        case 'update' : graph.updateData(data.getData()); break;
                     }
                 }
             });
