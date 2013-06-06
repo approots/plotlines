@@ -337,7 +337,8 @@ app.directive('graph', function(graph){
     return {
         restrict : 'A',
         scope : {
-            data : '='
+            data : '=',
+            onSelectNode : "&"
         },
         link : function (scope,element) {
 
@@ -388,7 +389,7 @@ app.directive('graph', function(graph){
                     // TODO refactor - use css classes
 
 
-                    
+
                     var node = d3.select(this);
                    // console.log(node.select("text").property("id"));
 /*
@@ -396,23 +397,21 @@ app.directive('graph', function(graph){
                         scope.currentPassage = node.select("text").property("id");
                     });
 */
-                    // unselect and unhighlight any other node
-                    var selectedNode = d3.select("g.node.selected");
-                    selectedNode.classed("selected", false);
-                    unhighlight(selectedNode, 0);
-                    //allNodes.each(unhighlight);
-
+                    // unselect and unhighlight previously selected node
+                    var previousSelectedNode = d3.select("g.node.selected");
+                    previousSelectedNode.classed("selected", false);
+                    unhighlight(previousSelectedNode, 0);
 
                     // select this class
                     node.classed("selected", true);
                     // already highlighted by mouseover event, so the user knows it's selected.
 
                     // todo let our controller code know
-                    /*
+
                     scope.$apply(function () {
-                        scope.currentPassage = node.select("text").property("id");
+                        scope.onSelectNode({id : node.select("text").property("id")});
                     });
-                    */
+
 
                 }
 
@@ -494,21 +493,37 @@ app.directive('graph', function(graph){
                     force.start();
                 }
 
+                function getNodeMap() {
+                    var nodeMap = {};
+                    nodes.forEach(function(node) {
+                        nodeMap[node.id] = node;
+                    });
+
+                    return nodeMap;
+                }
+
                 function addData(data) {
 
-                    var nodeMap = {};
+                    var nodeMap;
 
-                    data.nodes.forEach(function(node) {
-                        nodeMap[node.id] = node;
-                        nodes.push(node);
-                    });
-                    // For each link, add a reference to the source and the target node.
-                    // TODO this won't work if the node linked to doesn't exist in the new data!
-                    data.links.forEach(function(link) {
-                        link.source = nodeMap[link.source];
-                        link.target = nodeMap[link.target];
-                        links.push(link);
-                    });
+                    if (data.nodes) {
+                        data.nodes.forEach(function(node) {
+                            //nodeMap[node.id] = node;
+                            nodes.push(node);
+                        });
+                    }
+
+                    if (data.links) {
+                        nodeMap = getNodeMap();
+
+                        // For each link, add a reference to the source and the target node.
+                        // TODO this won't work if the node linked to doesn't exist in the new data!
+                        data.links.forEach(function(link) {
+                            link.source = nodeMap[link.source];
+                            link.target = nodeMap[link.target];
+                            links.push(link);
+                        });
+                    }
 
                     update();
                 }
@@ -596,10 +611,17 @@ app.directive('graph', function(graph){
 
             scope.$watch('data', function(data) {
                 if (data) {
+                    /*
                     switch (data.getAction() ) {
                         case 'add' : graph.addData(data.getData()); break;
                         case 'remove' : graph.removeData(data.getData()); break;
                         case 'update' : graph.updateData(data.getData()); break;
+                    }
+                    */
+                    switch (data.action) {
+                        case 'add' : graph.addData(data); break;
+                        case 'remove' : graph.removeData(data); break;
+                        case 'update' : graph.updateData(data); break;
                     }
                 }
             });
