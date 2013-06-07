@@ -1,0 +1,96 @@
+div#passage-graph {
+    border: 1px dashed #ccc;
+    /*display: block; */
+    /*width: 100%; */
+    margin: 0 auto;
+    /* want space below when content wraps under on window resize */
+    margin-bottom: 20px;
+    /*width:480px;*/
+    /* must have height because D3.js directive requires it. */
+    /* NOTE same height as the passage-list div beside it. */
+   height:480px;
+    overflow: hidden;
+}
+
+/*svg {display: block; width: 80%; margin: 0 auto;}*/
+
+.link {
+    fill: none;
+    stroke: #aaa;
+    stroke-width: 1.5px;
+}
+
+/* Node is a wrapper for circle and text. Circle and text classes defines the style. */
+.node {
+    /*
+    fill: #000;
+    stroke: #fff;
+    stroke-width: 20px;
+    */
+}
+
+/*
+.node.a { fill: #1f77b4; }
+.node.b { fill: #ff7f0e; }
+.node.c { fill: #2ca02c; }
+.node.d { fill: #2ca02e; }
+*/
+
+marker {
+    fill: #aaa;
+}
+
+marker#conditional {
+    fill: orange;
+}
+
+.link.conditional {
+    stroke: orange;
+}
+/*
+path.link.resolved {
+  stroke-dasharray: 0,2 1;
+}
+*/
+
+circle {
+    fill: #fff;
+    stroke: #aaa;
+    stroke-width: 4px;
+    cursor: pointer;
+}
+
+/*
+circle.highlight {
+    stroke-width: 6px;
+}
+*/
+
+.circle.green { stroke: #468847; }
+.circle.red { stroke: #e9322d; }
+.circle.white { /*stroke: #aaa;*/ /* fill: #fff; */ }
+
+
+text {
+    font-family:Arial, sans-serif;
+    color: #000;
+    font-size: 8px;
+    pointer-events: none;
+}
+text.shadow {
+    stroke: #fff;
+    stroke-width: 2px;
+    stroke-opacity: .8;
+}
+text.toptext {
+    stroke: #000;
+    stroke-width: 0px;
+}
+
+
+.tooltip{
+    display:block;
+    background: rgba(0, 0, 0, 0.5);
+    color:white;
+    padding:2px;
+}
