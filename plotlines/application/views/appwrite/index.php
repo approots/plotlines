@@ -11,8 +11,7 @@
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.1.4/angular.min.js"></script>
-    <!-- <script type="text/javascript" src="js/vendor/bootstrap.min.js"></script> -->
-    <!--  -->
+    <script type="text/javascript" src="js/vendor/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/vendor/ui-bootstrap-tpls-0.3.0.min.js"></script>
 
     <!--
@@ -26,7 +25,7 @@
     <script type="text/javascript" src="js/vendor/d3.tooltip.js"></script>
     <link rel="stylesheet" type="text/css" href="css/graph.css" media="screen" />
 
-    <!-- TODO merge these with some sort of build process -->
+    <!-- app - todo merge these with some sort of build process -->
     <script type="text/javascript" src="angularjs/appwrite/app.js"></script>
     <script type="text/javascript" src="angularjs/services/services.js"></script>
     <script type="text/javascript" src="angularjs/directives/directives.js"></script>
@@ -36,147 +35,14 @@
     <script type="text/javascript" src="angularjs/appwrite/controllers/passage.js"></script>
     <script type="text/javascript" src="angularjs/appwrite/controllers/test.js"></script>
 
-
-
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" media="screen" />
-
     <!-- redactor wysiwyg -->
     <link href="css/redactor.css" type="text/css" rel="stylesheet">
     <script type="text/javascript" src="js/vendor/redactor.js"></script>
 
-
-    <style type="text/css">
-
-        /* top padding for bootstrap fixed navbar on various screen sizes */
-        body { padding-top: 60px; }
-        @media screen and (max-width: 768px) {
-            body { padding-top: 0px; }
-        }
-
-        input {
-            max-width: 100%;
-        }
-
-        .table th.text-right, .table td.text-right { text-align: right; }
-
-            /* Override bootstrap style that shows input error on focus for required fields. */
-        input:focus:invalid:focus,
-        textarea:focus:invalid:focus,
-        select:focus:invalid:focus {
-            border-color: rgba(82, 168, 236, 0.8);
-            outline: 0;
-            outline: thin dotted \9;
-            /* IE6-9 */
-            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
-            -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
-            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
-        }
-        .story-form input.ng-invalid.ng-dirty {
-            border-color: #953b39;
-            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
-            -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
-            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
-        }
-        .story-form textarea.ng-invalid.ng-dirty {
-            border-color: #953b39;
-            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
-            -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
-            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
-        }
-
-        .passage-form input.ng-invalid.ng-dirty {
-            border-color: #953b39;
-            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
-            -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
-            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
-        }
-        .passage-form textarea.ng-invalid.ng-dirty {
-            border-color: #953b39;
-            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
-            -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
-            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
-        }
-
-        .link-form input.ng-invalid.ng-dirty {
-            border-color: #953b39;
-            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
-            -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
-            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
-        }
-        .link-form textarea.ng-invalid.ng-dirty {
-            border-color: #953b39;
-            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
-            -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
-            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
-        }
-
-        .floatLeftMedia.h2 {
-            float:left;
-            padding: 12px 5px 0 0;
-        }
-        .floatLeftMedia.p {
-            float:left;
-            padding: 0 5px 5px 0;
-        }
-
-        #passage-list {
-            /* NOTE same height as the passage-graph div beside it. */
-            /*height:480px;*/
-        }
-        /* NOTE height of tbody and other content in #passage-list should equal height of passage-graph beside. */
-/*
-        #passage-list-table {
-            height: 430px;
-            overflow: auto;
-        }
-*/
-        h3.up {
-            margin-top: -7px;
-        }
-
-        #passage-list-table {
-
-        }
-
-        .bs-docs-example {
-            position: relative;
-            margin: 15px 0;
-            padding: 39px 19px 14px;
-            *padding-top: 19px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            -webkit-border-radius: 4px;
-            -moz-border-radius: 4px;
-            border-radius: 4px;
-        }
-
-            /* Echo out a label for the example */
-        .bs-docs-example:after {
-            content: "Example";
-            position: absolute;
-            top: -1px;
-            left: -1px;
-            padding: 3px 7px;
-            font-size: 12px;
-            font-weight: bold;
-            background-color: #f5f5f5;
-            border: 1px solid #ddd;
-            color: #9da0a4;
-            -webkit-border-radius: 4px 0 4px 0;
-            -moz-border-radius: 4px 0 4px 0;
-            border-radius: 4px 0 4px 0;
-        }
-            /*
-            .story-form input.ng-valid.ng-dirty {
-                outline:none;
-                border-color: #0eb91c;
-                box-shadow:0 0 4px #0eb91c;
-            }
-            */
-
-    </style>
-
-    <link href="css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="css/base.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="css/appwrite.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.min.css" media="screen" />
 
 
 </head>
@@ -212,8 +78,13 @@
         </div>
     </div>
 
-    <!-- <div class="container-fluid">
-    <!--  <div class="row-fluid">-->
+    <div id="subnav" class="subnav jumbotron">
+        <div class="container">
+            <p class="h3">Story TitleStory TitleStory TitleStory TitleStory TitleStory TitleStory Title</p>
+            <a href="" class="btn btn-inverse"><i class="icon-chevron-down icon-white"></i> Story Options</a>
+        </div>
+    </div>
+
     <div class="container">
 
         <!-- Application wide alerts -->
@@ -222,16 +93,23 @@
         <!-- Page loading alert -->
         <div class="alert alert-info" ng-show="notification.getLoading()"><button type="button" class="close" data-dismiss="alert">&times;</button>Loading...</div>
 
-<!--
-        <div class="row">
-            <div class="span1"><a href="">Link</a></div>
-            <div class="span11"> -->
-                <ng-view></ng-view>
 
-      <!--      </div>
-        </div> -->
+        <ng-view></ng-view>
 
     </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Designed and built with all the love in the world by <a href="http://twitter.com/mdo" target="_blank">@mdo</a> and <a href="http://twitter.com/fat" target="_blank">@fat</a>.</p>
+            <p>Code licensed under <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License v2.0</a>, documentation under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
+            <p><a href="http://glyphicons.com">Glyphicons Free</a> licensed under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
+            <ul class="footer-links">
+                <li><a href="#">Blog</a></li>
+                <li class="muted">&middot;</li>
+                <li><a href="#">Issues</a></li>
+            </ul>
+        </div>
+    </footer>
 
 </body>
 </html>

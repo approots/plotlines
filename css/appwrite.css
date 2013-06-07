@@ -1,3 +1,4 @@
+/* --- animations --- */
 .fade-hide-setup, .fade-show-setup {
     -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.8s;
     -moz-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.8s;
@@ -20,10 +21,94 @@
 .fade-leave-setup.fade-leave-start {
     opacity:0;
 }
-
+/*
 body.skip-animations * {
     -webkit-transition:none!important;
     -moz-transition:none!important;
     -o-transition:none!important;
     transition:none!important;
 }
+*/
+input {
+    max-width: 100%;
+}
+
+.table th.text-right, .table td.text-right { text-align: right; }
+/* --- Angular form styles --- */
+/* Override bootstrap style that shows input error on focus for required fields. */
+input:focus:invalid:focus,
+textarea:focus:invalid:focus,
+select:focus:invalid:focus {
+    border-color: rgba(82, 168, 236, 0.8);
+    outline: 0;
+    outline: thin dotted \9;
+    /* IE6-9 */
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+}
+.story-form input.ng-invalid.ng-dirty {
+    border-color: #953b39;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
+}
+.story-form textarea.ng-invalid.ng-dirty {
+    border-color: #953b39;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
+}
+
+.passage-form input.ng-invalid.ng-dirty {
+    border-color: #953b39;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
+}
+.passage-form textarea.ng-invalid.ng-dirty {
+    border-color: #953b39;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
+}
+
+.link-form input.ng-invalid.ng-dirty {
+    border-color: #953b39;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
+}
+.link-form textarea.ng-invalid.ng-dirty {
+    border-color: #953b39;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
+}
+/*
+.floatLeftMedia.h2 {
+    float:left;
+    padding: 12px 5px 0 0;
+}
+.floatLeftMedia.p {
+    float:left;
+    padding: 0 5px 5px 0;
+}
+*/
+
+#passage-list {
+    /* NOTE same height as the passage-graph div beside it. */
+    /*height:480px;*/
+}
+/* NOTE height of tbody and other content in #passage-list should equal height of passage-graph beside. */
+/*
+        #passage-list-table {
+            height: 430px;
+            overflow: auto;
+        }
+*/
+/* todo not so generic - it's for the passage page selected passage */
+h3.up {
+    margin-top: -7px;
+}
+
