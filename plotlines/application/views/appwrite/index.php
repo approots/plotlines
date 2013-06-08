@@ -62,14 +62,9 @@
                         <li class="active"><a href="#">Link</a></li>
                         <li><a href="#">Link</a></li>
                         <li><a href="#">Link</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                            </ul>
-                        </li>
                     </ul>
+
+
                     <form class="navbar-search pull-right" action="">
                         <input type="text" class="search-query span2" placeholder="Search">
                     </form>
@@ -78,26 +73,33 @@
         </div>
     </div>
 
-    <div id="subnav" class="subnav jumbotron">
+    <div id="alerts" class="jumbotron">
+        <div class="container">
+            <!-- Application wide alerts -->
+            <alert ng-repeat="alert in notification.getAlerts()" type="alert.type" close="notification.closeAlert($index)">{{alert.message}}</alert>
+
+            <!-- Page loading alert -->
+            <div class="alert alert-info" ng-show="notification.getLoading()"><button type="button" class="close" data-dismiss="alert">&times;</button>Loading...</div>
+        </div>
+    </div>
+
+
+    <ng-view></ng-view>
+<!--
+    <div id="subnav" class="jumbotron">
         <div class="container">
             <p class="h3">Story TitleStory TitleStory TitleStory TitleStory TitleStory TitleStory Title</p>
-            <a href="" class="btn btn-inverse"><i class="icon-chevron-down icon-white"></i> Story Options</a>
+            <a href="" class="btn btn-inverse"><i class="icon-chevron-down icon-white"></i> <strong>Story Options</strong></a>
         </div>
     </div>
 
     <div class="container">
 
-        <!-- Application wide alerts -->
-        <alert ng-repeat="alert in notification.getAlerts()" type="alert.type" close="notification.closeAlert($index)">{{alert.message}}</alert>
-
-        <!-- Page loading alert -->
-        <div class="alert alert-info" ng-show="notification.getLoading()"><button type="button" class="close" data-dismiss="alert">&times;</button>Loading...</div>
 
 
-        <ng-view></ng-view>
 
     </div>
-
+-->
     <footer class="footer">
         <div class="container">
             <p>Designed and built with all the love in the world by <a href="http://twitter.com/mdo" target="_blank">@mdo</a> and <a href="http://twitter.com/fat" target="_blank">@fat</a>.</p>

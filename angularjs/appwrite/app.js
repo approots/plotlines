@@ -25,7 +25,7 @@ app.config(function ($routeProvider, $httpProvider) {
             controller : 'PassageCtrl',
             resolve : PassageCtrl.resolve
         })
-        .when('/test' , {
+        .when('/test/:storyId' , {
             templateUrl : 'angularjs/appwrite/views/test.html',
             controller : 'TestCtrl',
             resolve : TestCtrl.resolve

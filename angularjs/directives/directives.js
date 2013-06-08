@@ -502,13 +502,20 @@ app.directive('graph', function(graph){
                     return nodeMap;
                 }
 
+                function getNodeIndexMap() {
+                    var nodeMap = {};
+                    for (var i in nodes) {
+                        nodeMap[nodes[i]["id"]] = i;
+                    }
+                    return nodeMap;
+                }
+
                 function addData(data) {
 
                     var nodeMap;
 
                     if (data.nodes) {
                         data.nodes.forEach(function(node) {
-                            //nodeMap[node.id] = node;
                             nodes.push(node);
                         });
                     }
@@ -517,7 +524,6 @@ app.directive('graph', function(graph){
                         nodeMap = getNodeMap();
 
                         // For each link, add a reference to the source and the target node.
-                        // TODO this won't work if the node linked to doesn't exist in the new data!
                         data.links.forEach(function(link) {
                             link.source = nodeMap[link.source];
                             link.target = nodeMap[link.target];
@@ -529,10 +535,35 @@ app.directive('graph', function(graph){
                 }
 
                 function removeData(data) {
+                    // Just removes nodes for the time-being
+
+                    // get the nodes array index for each node id
+                    var nodeMap = getNodeIndexMap();
+                    //var indexMap = getLinkIndexMap();
+
+                    // for each node we need to remove
+                    // (only one at a time right now so design for efficiency accordingly)...
                     data.nodes.forEach(function(node) {
-                        nodeMap[node.id] = node;
-                        nodes.push(node);
+                        // remove node
+                        // if we are only removing one, creating a node map isn't efficient
+                        nodes.splice(nodeMap[node.id],1);
+
+                        // remove associated links
+                        var i = 0;
+                        //var n = node.id;
+                        while (i < links.length) {
+                            console.log(links[i]['source']);
+                            if ((links[i]['source']["id"] == node.id)||(links[i]['target']["id"] == node.id)) {
+                                console.log("splice link");
+                                links.splice(i,1);
+                            }
+                            else {
+                                i++;
+                            }
+                        }
                     });
+
+                    update();
                 }
 
                 function updateData(data) {
