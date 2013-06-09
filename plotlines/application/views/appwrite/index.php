@@ -73,15 +73,7 @@
         </div>
     </div>
 
-    <div id="alerts" class="jumbotron">
-        <div class="container">
-            <!-- Application wide alerts -->
-            <alert ng-repeat="alert in notification.getAlerts()" type="alert.type" close="notification.closeAlert($index)">{{alert.message}}</alert>
 
-            <!-- Page loading alert -->
-            <div class="alert alert-info" ng-show="notification.getLoading()"><button type="button" class="close" data-dismiss="alert">&times;</button>Loading...</div>
-        </div>
-    </div>
 
 
     <ng-view></ng-view>
