@@ -15,16 +15,9 @@ body {
     padding-top: 40px;
 }
 
-.typing {
-    font-family: "Courier New", Courier, monospace;
-}
-.typing.heading {
-    font-weight: bold;
-}
-
-
 hr {
-    margin: 20px 0;
+    margin-top: 16px;
+    margin-bottom: 16px;
     border: 0;
     border-top: 1px solid #dddddd;
     border-bottom: 1px solid #ffffff;
@@ -41,30 +34,44 @@ hr.soften {
     border: 0;
 }
 
-.jumbotron {
-    text-align: center;
-    color: #999;
-    background: #f5f5f5;
-    border-bottom: 1px solid #e5e5e5;
-    padding-bottom: 16px;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.navbar .brand {
-    font-family: "Courier New", Courier, monospace;
-    font-size: 28px;
-    font-weight: bold;
-    -webkit-transition: all .2s linear;
-    -moz-transition: all .2s linear;
-    transition: all .2s linear;
-}
 
 
 h3 {
     font-size: 24px;
     font-weight:normal;
 }
+
+.jumbotron {
+    text-align: center;
+    color: #999;
+    background: #f5f5f5;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 6px;
+    margin-bottom: 16px;
+    color: #333;
+}
+
+.navbar .brand {
+    /*font-family: "Bohemian typewriter", "veteran typewriter", "Courier New", Courier, monospace;*/
+    font-family: "Courier New", Courier, monospace;
+    font-size: 28px;
+    font-weight: bold;
+    color: #DCDCDC;
+    -webkit-transition: all .2s linear;
+    -moz-transition: all .2s linear;
+    transition: all .2s linear;
+}
+
+/*
+.typing {
+    font-family: "Courier New", Courier, monospace;
+}
+.typing.heading {
+    font-weight: bold;
+}
+*/
+
+
 
 #alerts {
     position: relative;
@@ -91,10 +98,6 @@ h3 {
     border-bottom: 1px solid #e5e5e5;
 }
 */
-#subnav p.h3 {
-    font-size: 24px;
-    line-height:120%
-}
 
 .grey-button{
     opacity: 0.8;
@@ -188,7 +191,7 @@ h3 {
     /* Widen masthead and social buttons to fill body padding */
     .jumbotron {
         padding-top: 0px;
-        padding-bottom: 20px;
+        padding-bottom: 6px;
         padding-left: 20px;
         padding-right: 20px;
         margin-top:   -20px;
@@ -196,7 +199,10 @@ h3 {
         margin-left:  -20px;
     }
 
-
+    /* NOTE: this hack may lead to unexpected results. */
+    .text-right {
+        text-align: left;
+    }
 
     /* Unfloat the back to top link in footer */
     .footer {
@@ -238,6 +244,13 @@ h3 {
         display: block;
         margin: 0 auto;
     }
+
+    .jumbotron form {
+        text-align: center;
+    }
+
+
+
 
     /* Do our best to make tables work in narrow viewports */
     table code {

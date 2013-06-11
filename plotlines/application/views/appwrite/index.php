@@ -4,7 +4,7 @@
     <title>Plotlines</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="css/appwrite.css" type="text/css" rel="stylesheet">
+
 
 
 
@@ -39,10 +39,15 @@
     <link href="css/redactor.css" type="text/css" rel="stylesheet">
     <script type="text/javascript" src="js/vendor/redactor.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" media="screen" />
+    <!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" media="screen" />-->
+    <!--
+    <link rel="stylesheet/less" href="css/bootstrap_less/bootstrap.less">
+    <script type="text/javascript" src="js/vendor/less.js"></script> -->
+    <!-- bootstrap less file compiled automatically by PHPStorm IDE -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="css/base.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="css/appwrite.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.min.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="css/appwrite.css" media="screen" />
 
 
 </head>

@@ -1,0 +1,250 @@
+
+<div class="jumbotron">
+    <div class="container">
+        <div id="alerts">
+            <alert ng-repeat="alert in notification.getAlerts()" type="alert.type" close="notification.closeAlert($index)">{{alert.message}}</alert>
+            <div class="alert alert-info" ng-show="notification.getLoading()"><button type="button" class="close" data-dismiss="alert">&times;</button>Loading...</div>
+        </div>
+        <!--
+        <div id="subnav">
+            <p class="h3">&ldquo;{{story.title}}&rdquo;</p>
+            <a ng-show="! storyOptions" href="" class="btn grey-button" ng-click="storyOptions = true;"><i class="icon-chevron-down"></i> <strong>Options</strong></a>
+
+            <div id="story-options" ng-show="storyOptions">
+
+                <hr class="soften"/>
+
+                <div class="row">
+
+
+
+
+                    <div class="span4">
+                        <form novalidate name="editStoryForm" class="story-form" ng-submit="saveStory()">
+                            <fieldset>
+
+                                <label class="control-label" for="inputStoryTitle">Title</label>
+                                <input type="text" class="input-error" ng-model="story.title" required unique-slug="otherSlugs" name="inputStoryTitle" id="inputStoryTitle" placeholder="Unique Title">
+                                <span class="text-error" ng-show="editStoryForm.inputStoryTitle.$error.required">Required</span>
+                                <span class="text-error" ng-show="editStoryForm.inputStoryTitle.$error.unique && editStoryForm.inputStoryTitle.$dirty">A similar title exists.</span>
+
+                                <label class="control-label" for="textareaStoryDescription">Description</label>
+                                <textarea id="textareaStoryDescription" name="textareaStoryDescription" ng-model="story.description" placeholder="Optional Description"></textarea>
+
+                                <br/>
+
+                                <button name="submitStory" id="submitStory" type="submit" ng-disabled="editStoryForm.$invalid || isUnchangedStory()" class="btn btn-primary">Save Changes</button>
+                                <button type="button" ng-click="resetStory()" ng-disabled="isUnchangedStory()" class="btn">Reset</button>
+                            </fieldset>
+                        </form>
+                    </div>
+
+
+
+
+                    <div class="span6">
+                        {{story.description}}
+                    </div>
+
+                    <div class="span2">
+                        <a href="" class="btn btn-danger" ng-click="deleteStory()"><i class="icon-remove icon-white"></i> Delete</a>
+                    </div>
+
+                </div>
+
+                <hr class="soften"/>
+
+            </div>
+
+            <a ng-show="storyOptions" href="" class="btn grey-button" ng-click="storyOptions = false;"><i class="icon-chevron-up"></i> <strong>Options</strong></a>
+        </div>
+         -->
+        <div id="subnav">
+
+            <div class="row">
+                <div class="span3">
+                    <a ng-show="! storyOptions" href="" class="btn grey-button" ng-click="storyOptions = true;"><i class="icon-chevron-down"></i> <strong>Options</strong> </a>
+                    <a ng-show="storyOptions" href="" class="btn grey-button" ng-click="storyOptions = false;"><i class="icon-chevron-up"></i> <strong>Options</strong> </a>
+                </div>
+                <div class="span6" style="text-align:center;"><p class="h3">{{story.title}}</p></div>
+                <div class="span3"></div>
+            </div>
+
+            <div id="story-options" ng-show="storyOptions">
+
+                <hr class="soften"/>
+
+                <div class="row">
+                    <div class="span4">
+                        <form novalidate name="editStoryForm" class="story-form" ng-submit="saveStory()">
+                            <fieldset>
+
+                                <label class="control-label" for="inputStoryTitle">Title</label>
+                                <input type="text" class="input-error" ng-model="story.title" required unique-slug="otherSlugs" name="inputStoryTitle" id="inputStoryTitle" placeholder="Unique Title">
+                                <span class="text-error" ng-show="editStoryForm.inputStoryTitle.$error.required">Required</span>
+                                <span class="text-error" ng-show="editStoryForm.inputStoryTitle.$error.unique && editStoryForm.inputStoryTitle.$dirty">A similar title exists.</span>
+
+                                <label class="control-label" for="textareaStoryDescription">Description</label>
+                                <textarea id="textareaStoryDescription" name="textareaStoryDescription" ng-model="story.description" placeholder="Optional Description"></textarea>
+
+                                <br/>
+
+                                <button name="submitStory" id="submitStory" type="submit" ng-disabled="editStoryForm.$invalid || isUnchangedStory()" class="btn btn-primary">Save Changes</button>
+                                <button type="button" ng-click="resetStory()" ng-disabled="isUnchangedStory()" class="btn">Reset</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div class="span6">
+                        {{story.description}}
+                    </div>
+                    <div class="span2 text-right">
+                        <a href="" class="btn btn-danger" ng-click="deleteStory()"><i class="icon-remove icon-white"></i> Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div id="selected-passage" class="row">
+        <div class="span3">
+            <a href="" class="btn btn-primary"><i class="icon-chevron-down icon-white"></i> <strong>Options</strong></a>
+        </div>
+        <div class="span6" style="text-align:center;">
+            <p class="h3">{{currentPassage.title}}</p>
+        </div>
+        <div class="span3 text-right">
+            <a href="" class="btn btn-primary"><i class="icon-plus icon-white"></i> <strong>New Passage</strong></a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span6">
+            <div id="passage-graph" graph data="graphData" on-select-node="setCurrentPassage(id);"></div>
+        </div>
+        <div class="span6">
+
+            <div id="passage-list" ng-show="passages">
+
+
+                <div>
+                    <form class="form-horizontal">
+                        <input type="text" ng-model="searchText" placeholder="Filter">
+                    </form>
+                </div>
+
+
+
+                <table id="passage-table" class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th><a href="" ng-click="predicate = 'title'; reverse=!reverse">Title</a></th>
+                        <!--<th><a href="" ng-click="predicate = 'body'; reverse=!reverse">Text</a></th>-->
+                        <th>dummy </th>
+                        <th>fgf</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-class="{info: currentPassage.id === passage.id}" ng-repeat="passage in passages | orderBy:predicate:reverse | filter:searchText">
+                        <td ng-click="">{{passage.title}}</td>
+                        <td>dummy data dummy data dummy data dummy data dummy data dummy data</td>
+                        <td class="text-right"><a href="#/passages/{{passage.id}}" class="btn btn-primary"><i class="icon-pencil icon-white"></i></a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div ng-show="! passages">
+                Write the first passage. <a href="" class="btn btn-primary"><i class="icon-plus icon-white"></i> <strong>New Passage</strong></a>
+            </div>
+
+            <div>
+                <form ng-submit="addNode()">
+                    <input type="text" ng-model="node.title"/>
+                    <input type="submit" value="Add"/>
+                </form>
+            </div>
+            <div>
+                <form ng-submit="removeNode()">
+                    <input type="text" ng-model="node.id"/>
+                    <input type="submit" value="Remove"/>
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+
+<!--
+    <div class="row" id="passage-container">
+        <div class="span6">
+            <h3 class="up">
+                <a href="" class="btn btn-primary"><i class="icon-chevron-down icon-white"></i> <strong>Options</strong></a>
+                <span>{{currentPassage.title}}</span>
+
+            </h3>
+
+            <div id="passage-graph" graph data="graphData" on-select-node="setCurrentPassage(id);"></div>
+        </div>
+        <div class="span6">
+
+            <div id="passage-list" ng-show="passages">
+                <div class="row">
+                    <div class="span2">
+                        <a href="" class="btn btn-primary"><i class="icon-plus icon-white"></i> <strong>New Passage</strong></a>
+                    </div>
+                    <div class="span4 text-right">
+                        <form class="form-horizontal">
+                            <input type="text" ng-model="searchText" placeholder="Filter">
+                        </form>
+                    </div>
+
+                </div>
+
+                <table id="passage-table" class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th><a href="" ng-click="predicate = 'title'; reverse=!reverse">Title</a></th>
+                            <th><a href="" ng-click="predicate = 'body'; reverse=!reverse">Text</a></th>
+                             <th>dummy </th>
+                             <th>fgf</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                         <tr ng-class="{info: currentPassage.id === passage.id}" ng-repeat="passage in passages | orderBy:predicate:reverse | filter:searchText">
+                             <td ng-click="">{{passage.title}}</td>
+                             <td>dummy data dummy data dummy data dummy data dummy data dummy data</td>
+                             <td class="text-right"><a href="#/passages/{{passage.id}}" class="btn btn-primary"><i class="icon-pencil icon-white"></i></a></td>
+                         </tr>
+                     </tbody>
+                </table>
+            </div>
+
+            <div ng-show="! passages">
+                Write the first passage. <a href="" class="btn btn-primary"><i class="icon-plus icon-white"></i> <strong>New Passage</strong></a>
+            </div>
+
+            <div>
+                <form ng-submit="addNode()">
+                    <input type="text" ng-model="node.title"/>
+                    <input type="submit" value="Add"/>
+                </form>
+            </div>
+            <div>
+                <form ng-submit="removeNode()">
+                    <input type="text" ng-model="node.id"/>
+                    <input type="submit" value="Remove"/>
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+    -->
+</div>
+
+
+
+
+

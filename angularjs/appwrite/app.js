@@ -30,6 +30,11 @@ app.config(function ($routeProvider, $httpProvider) {
             controller : 'TestCtrl',
             resolve : TestCtrl.resolve
         })
+        .when('/login' , {
+            templateUrl : 'angularjs/appwrite/views/login.html',
+            controller : 'LoginCtrl',
+            resolve : LoginCtrl.resolve
+        })
         .when('/404' , {
             templateUrl : 'angularjs/appwrite/views/404.html'
         })

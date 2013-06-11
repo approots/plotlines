@@ -48,12 +48,12 @@ function TestCtrl ($scope, $rootScope, $location, $http, $timeout, utils, notifi
         {id:'15',title : 'Qualcomm', color: "red"},
         {id:'16',title : 'Huawei', color: "orange"},
         {id:'17',title : 'RIM', color: "red"},
-        {id:'18',title : 'Sony', color: "red", highlight: ""},
-        {id:'19',title : 'Ericsson', color: "orange", highlight: ""},
-        {id:'20',title : 'Inventec', color: "red", highlight: ""},
-        {id:'dummy',title : 'Dummy', color: "red", highlight: ""}
+        {id:'18',title : 'Sony', color: "red"},
+        {id:'19',title : 'Ericsson', color: "orange"},
+        {id:'20',title : 'Inventec', color: "red"},
+        {id:'dummy',title : 'Dummy', color: "red"}
     ];
-
+/*
     var dataModule = function() {
         // options are add, remove
         var action = 'add';
@@ -78,16 +78,84 @@ function TestCtrl ($scope, $rootScope, $location, $http, $timeout, utils, notifi
             getData : getData
         }
     };
+    */
 
     var data = {action:'add',nodes:nodes,links:links};
-    var dataModuleInstance = dataModule().init(data);
+    //var dataModuleInstance = dataModule().init(data);
     //dataModuleInstance.setData(data);
-
+/*
     notification.addAlert({type:'success',message:'You done good.'});
     notification.addAlert({type:'info',message:'You done good.'});
     notification.addAlert({type:'error',message:'You done good.'});
+*/
 
+    // Begin Story...
     $scope.story = httpResponse.data.story;
+    $scope.originalStory = angular.copy($scope.story); //angular.copy(storyResponse.data.story);
+    //$scope.isEditStory = false;
+    // show/hide story options
+    $scope.storyOptions = false;
+    // Remove this story slug from existing slugs since we don't want that to be a validation error.
+    $scope.otherSlugs = httpResponse.data.otherSlugs;
+    $scope.deleteStory = function() {
+        $http({
+            method: 'DELETE',
+            url: 'http://api.plotlines/stories',
+            data: {id:$scope.story.id}
+        })
+            .success(function(data, status) {
+                notification.addFlash({type:'success',message:'"' + $scope.story.title + '" has been deleted.'});
+                $location.path('/stories');
+            })
+            .error(function(data, status){
+                notification.addAlert({type:'error',message:'Error deleting the story! ' + data});
+            });
+    };
+    $scope.saveStory = function() {
+        $http({
+            method: 'PUT',
+            url: 'http://api.plotlines/stories',
+            data: {
+                id: $scope.story.id,
+                title: $scope.story.title,
+                description: $scope.story.description
+            }
+        })
+            .success(function(data, status) {
+                $scope.originalStory = angular.copy($scope.story);
+                $scope.story = data;
+                $scope.isEditStory = false;
+                notification.addAlert({type:'success',message:'Saved.'});
+            })
+            .error(function(data, status){
+                notification.addAlert({type:'error',message:'Error updating the story. ' + data});
+            });
+    };
+    $scope.resetStory = function() {
+        $scope.story.title = $scope.originalStory.title;
+        $scope.story.description = $scope.originalStory.description;
+        $scope.story.slug = $scope.originalStory.slug;
+    };
+
+    $scope.isUnchangedStory = function() {
+        return (($scope.story.title === $scope.originalStory.title)
+            && ($scope.story.description === $scope.originalStory.description))
+    };
+    // ...End Story
+
+    console.log(httpResponse.data.passages);
+
+    nodes = httpResponse.data.passages;
+    links = httpResponse.data.links;
+    nodes.forEach(function(node) {
+        node.color = 'white';
+    });
+    links.forEach(function(link) {
+        link.type = 'unconditional';
+    });
+
+    links = angular.copy(links);
+
     $scope.graphData = {action:'add',nodes:nodes,links:links};//dataModuleInstance;
     $scope.passages = nodes;
     $scope.currentPassage = nodes[0];
@@ -121,8 +189,8 @@ function TestCtrl ($scope, $rootScope, $location, $http, $timeout, utils, notifi
     $scope.updateNode = function() {
         var id = utils.UUID();
         data = {action:'update',nodes:[{id:1}]};
-        dataModuleInstance = dataModule().init(data);
-        $scope.graphData = dataModuleInstance;
+        //dataModuleInstance = dataModule().init(data);
+        $scope.graphData = data;
         $scope.node = {};
     };
 

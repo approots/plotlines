@@ -1,65 +1,71 @@
-
-<!--
-<div style="display:none" class="alert alert-success" ng-show="message" ng-animate="{show: 'fade-show', hide: 'fade-hide'}"><button type="button" class="close"  ng-click="message = null">&times;</button>{{message}}</div>
-
-<div style="display:none" class="alert alert-error" ng-show="error" ng-animate="{show: 'fade-show', hide: 'fade-hide'}"><button type="button" class="close"  ng-click="error = null">&times;</button>{{error}}</div>
-
-
-
-<input type="button" ng-click="show()" value="Show"/>
-<input type="button" ng-click="hide()" value="Hide"/>
--->
-<div class="row">
-    <div class="span4">
-
-        <h3>New Story</h3>
-
-        <!--<div class="alert alert-success" ng-show="storyCreated"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Your story was created.</strong> Would you like to <a href="" ng-click=""><strong>begin writing</strong></a>?</div> -->
-
-        <form novalidate name="storyForm" class="story-form" ng-submit="create()">
-            <fieldset>
-                <label class="control-label" for="inputTitle">Title</label>
-
-                <input type="text" ng-model="story.title" required unique-slug="existingSlugs" name="inputTitle" id="inputTitle" placeholder="Unique Title" class="input-error">
-                <span class="text-error" ng-show="storyForm.inputTitle.$error.required && storyForm.inputTitle.$dirty">Required</span>
-                <span class="text-error" ng-show="storyForm.inputTitle.$error.unique && storyForm.inputTitle.$dirty">A similar title exists.</span>
-
-                <label class="control-label" for="textareaDescription">Description</label>
-                <textarea id="textareaDescription" ng-model="story.description" placeholder="Optional Description"></textarea>
-
-                <br/>
-                <!--<label class="control-label" for="submitStory"></label>-->
-                <button name="submitStory" id="submitStory" type="submit" ng-disabled="storyForm.$invalid || isPristine()" class="btn btn-primary">Create</button>
-                <button type="button" ng-click="reset()" ng-disabled="isPristine()" class="btn">Reset</button>
-            </fieldset>
-        </form>
+<div class="jumbotron">
+    <div class="container">
+        <div id="alerts">
+            <alert ng-repeat="alert in notification.getAlerts()" type="alert.type" close="notification.closeAlert($index)">{{alert.message}}</alert>
+            <div class="alert alert-info" ng-show="notification.getLoading()"><button type="button" class="close" data-dismiss="alert">&times;</button>Loading...</div>
+        </div>
+        <div id="subnav">
+            <p class="h3">Please select a story from your library, or write a new one.</p>
+        </div>
     </div>
+</div>
 
-    <div class="span8" ng-show="stories.length">
-        <h3>Library</h3>
+<div class="container">
+    <div class="row">
 
-        <form class="form-horizontal">
-            <input type="text" ng-model="searchText" placeholder="Search">
-        </form>
 
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th><a href="" ng-click="predicate = 'title'; reverse=!reverse">Title</a></th>
-                <th><a href="" ng-click="predicate = 'description'; reverse=!reverse">Description</a></th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="story in stories | orderBy:predicate:reverse | filter:searchText">
-                <td>{{story.title}}</td>
-                <td>{{story.description}}</td>
-                <td class="text-right">
-                    <a href="#/test/{{story.id}}" class="btn btn-primary"><i class="icon-pencil icon-white"></i></a>
-                    <!-- <a href="#/stories/{{story.id}}" class="btn btn-primary"><i class="icon-pencil icon-white"></i></a> -->
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="span9" ng-show="stories.length">
+            <h3>Library</h3>
+
+            <form class="form-horizontal">
+                <input type="text" ng-model="searchText" placeholder="Filter">
+            </form>
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th><a href="" ng-click="predicate = 'title'; reverse=!reverse">Title</a></th>
+                    <th><a href="" ng-click="predicate = 'description'; reverse=!reverse">Description</a></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="story in stories | orderBy:predicate:reverse | filter:searchText">
+                    <td>{{story.title}}</td>
+                    <td>{{story.description}}</td>
+                    <td class="text-right">
+                        <a href="#/test/{{story.id}}" class="btn btn-primary"><i class="icon-pencil icon-white"></i></a>
+                        <!-- <a href="#/stories/{{story.id}}" class="btn btn-primary"><i class="icon-pencil icon-white"></i></a> -->
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="span3">
+
+            <h3>New Story</h3>
+
+            <!--<div class="alert alert-success" ng-show="storyCreated"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Your story was created.</strong> Would you like to <a href="" ng-click=""><strong>begin writing</strong></a>?</div> -->
+
+            <form novalidate name="storyForm" class="story-form" ng-submit="create()">
+                <fieldset>
+                    <label class="control-label" for="inputTitle">Title</label>
+
+                    <input type="text" ng-model="story.title" required unique-slug="existingSlugs" name="inputTitle" id="inputTitle" placeholder="Unique Title" class="input-error">
+                    <span class="text-error" ng-show="storyForm.inputTitle.$error.required && storyForm.inputTitle.$dirty">Required</span>
+                    <span class="text-error" ng-show="storyForm.inputTitle.$error.unique && storyForm.inputTitle.$dirty">A similar title exists.</span>
+
+                    <label class="control-label" for="textareaDescription">Description</label>
+                    <textarea id="textareaDescription" ng-model="story.description" placeholder="Optional Description"></textarea>
+
+                    <br/>
+                    <!--<label class="control-label" for="submitStory"></label>-->
+                    <button name="submitStory" id="submitStory" type="submit" ng-disabled="storyForm.$invalid || isPristine()" class="btn btn-primary">Create</button>
+                    <button type="button" ng-click="reset()" ng-disabled="isPristine()" class="btn">Reset</button>
+                </fieldset>
+            </form>
+        </div>
+
     </div>
 </div>
