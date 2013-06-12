@@ -1,7 +1,41 @@
-/**
- * Created with JetBrains PhpStorm.
- * User: rick
- * Date: 11/06/13
- * Time: 10:45 AM
- * To change this template use File | Settings | File Templates.
- */
+function LoginCtrl ($rootScope, $scope, $http, notification) {
+    $scope.username = '';
+    $scope.password = '';
+    $scope.login = function() {
+        $http({
+            method: 'POST',
+            url: 'http://api.plotlines/login',
+            data: {
+                username: $scope.username,
+                password: $scope.password
+            }
+        })
+        .success(function(data, status) {
+                console.log(data);
+                console.log(status);
+            notification.addAlert({type:'success',message:'Logged in.'});
+                $rootScope.$broadcast('event:loginSuccess');
+                // bootstrap ui login dialog - see login module
+                //dialog.close();
+        })
+        .error(function(data, status){
+            notification.addAlert({type:'error',message:'Error authenticating: ' + data});
+        });
+    }
+
+    $scope.secure = function() {
+        $http({
+            method: 'GET',
+            url: 'http://api.plotlines/secure'
+        })
+        .success(function(data, status) {
+            console.log(data);
+            console.log(status);
+            notification.addAlert({type:'success',message:'Logged in.'});
+        })
+        .error(function(data, status){
+            notification.addAlert({type:'error',message:'Error authenticating: ' + data});
+        });
+    }
+}
+

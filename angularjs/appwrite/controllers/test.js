@@ -121,15 +121,15 @@ function TestCtrl ($scope, $rootScope, $location, $http, $timeout, utils, notifi
                 description: $scope.story.description
             }
         })
-            .success(function(data, status) {
-                $scope.originalStory = angular.copy($scope.story);
-                $scope.story = data;
-                $scope.isEditStory = false;
-                notification.addAlert({type:'success',message:'Saved.'});
-            })
-            .error(function(data, status){
-                notification.addAlert({type:'error',message:'Error updating the story. ' + data});
-            });
+        .success(function(data, status) {
+            $scope.originalStory = angular.copy($scope.story);
+            $scope.story = data;
+            $scope.isEditStory = false;
+            notification.addAlert({type:'success',message:'Saved.'});
+        })
+        .error(function(data, status){
+            notification.addAlert({type:'error',message:'Error updating the story. ' + data});
+        });
     };
     $scope.resetStory = function() {
         $scope.story.title = $scope.originalStory.title;

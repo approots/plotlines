@@ -1,9 +1,41 @@
 
-var app = angular.module('appwrite',['ui.bootstrap']);
+var app = angular.module('appwrite',['login','ui.bootstrap']);
 
 app.config(function ($routeProvider, $httpProvider) {
     //$httpProvider.defaults.headers.post  = {'Content-Type': 'application/x-www-form-urlencoded'};
+    $httpProvider.defaults.withCredentials = true;
+    /*
+    var interceptor = ['$rootScope','$q', function(scope, $q) {
 
+        function success(response) {
+            return response;
+        }
+
+        function error(response) {
+            var status = response.status;
+
+            if (status == 401) {
+                var deferred = $q.defer();
+                var req = {
+                    config: response.config,
+                    deferred: deferred
+                }
+                scope.requests401.push(req);
+                scope.$broadcast('event:loginRequired');
+                return deferred.promise;
+            }
+            // otherwise
+            return $q.reject(response);
+
+        }
+
+        return function(promise) {
+            return promise.then(success, error);
+        }
+
+    }];
+    $httpProvider.responseInterceptors.push(interceptor);
+    */
     $routeProvider
         .when('/', {
             templateUrl : 'angularjs/appwrite/views/stories.html',
@@ -32,8 +64,8 @@ app.config(function ($routeProvider, $httpProvider) {
         })
         .when('/login' , {
             templateUrl : 'angularjs/appwrite/views/login.html',
-            controller : 'LoginCtrl',
-            resolve : LoginCtrl.resolve
+            controller : 'LoginCtrl'
+            //resolve : LoginsCtrl.resolve
         })
         .when('/404' , {
             templateUrl : 'angularjs/appwrite/views/404.html'

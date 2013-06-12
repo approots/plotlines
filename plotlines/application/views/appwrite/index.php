@@ -26,6 +26,7 @@
     <link rel="stylesheet" type="text/css" href="css/graph.css" media="screen" />
 
     <!-- app - todo merge these with some sort of build process -->
+    <script type="text/javascript" src="angularjs/appwrite/login.js"></script>
     <script type="text/javascript" src="angularjs/appwrite/app.js"></script>
     <script type="text/javascript" src="angularjs/services/services.js"></script>
     <script type="text/javascript" src="angularjs/directives/directives.js"></script>
@@ -34,6 +35,7 @@
     <script type="text/javascript" src="angularjs/appwrite/controllers/story.js"></script>
     <script type="text/javascript" src="angularjs/appwrite/controllers/passage.js"></script>
     <script type="text/javascript" src="angularjs/appwrite/controllers/test.js"></script>
+    <script type="text/javascript" src="angularjs/appwrite/controllers/login.js"></script>
 
     <!-- redactor wysiwyg -->
     <link href="css/redactor.css" type="text/css" rel="stylesheet">
