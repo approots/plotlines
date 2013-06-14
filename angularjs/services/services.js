@@ -1,4 +1,4 @@
-app.factory("graph", function() {
+/*app.factory("graph", function() {
     var data;
     var setData = function(d) {
         data = d;
@@ -17,6 +17,7 @@ app.factory("graph", function() {
         getData : getData
     }
 });
+*/
 
 /**
  * types of notifications:
@@ -30,6 +31,8 @@ app.factory("notification", function($rootScope) {
     // alert format {type:'success',message:'You done good.'}
     var alerts = [];
 
+    var alert = null;
+
     var addFlash = function(flashAlert) {
         flashHolding.push(flashAlert);
     };
@@ -41,6 +44,13 @@ app.factory("notification", function($rootScope) {
     };
     var getAlerts = function () {
         return alerts;
+    };
+
+    var setAlert = function(alertObj) {
+        alert = alertObj;
+    };
+    var getAlert = function () {
+        return alert;
     };
     /*
     var getRouteError = function () {
@@ -54,6 +64,7 @@ app.factory("notification", function($rootScope) {
     $rootScope.$on("$routeChangeStart", function (event, next, current) {
         // clear all alerts
         alerts = [];
+        alert = {};
         loading = true;
 
         if (flashHolding.length) {
@@ -81,7 +92,10 @@ app.factory("notification", function($rootScope) {
 
         getAlerts: getAlerts,
         addAlert: addAlert,
-        closeAlert: closeAlert
+        closeAlert: closeAlert,
+
+        getAlert: getAlert,
+        setAlert: setAlert
     }
 });
 

@@ -1,4 +1,10 @@
 function LoginCtrl ($rootScope, $scope, $http, notification) {
+
+    //$scope.alert = {type: "error", message: "You can't do that!"};
+    $scope.addAlert = function() {
+        //$scope.alert = {type: "success", message: "You can do that!"};
+        notification.setAlert({ message: "You can do that!"});
+    }
     $scope.username = '';
     $scope.password = '';
     $scope.login = function() {

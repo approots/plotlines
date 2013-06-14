@@ -21,7 +21,9 @@
     </script>
     -->
     <!-- D3js -->
-    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+    <!-- <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script> -->
+    <!-- node zoom/pan not allowing drag in version > 1 -->
+    <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?1.29.1"></script>
     <script type="text/javascript" src="js/vendor/d3.tooltip.js"></script>
     <link rel="stylesheet" type="text/css" href="css/graph.css" media="screen" />
 
@@ -50,10 +52,18 @@
     <link rel="stylesheet" type="text/css" href="css/base.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.min.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="css/appwrite.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="css/notifications.css" media="screen" />
+
+    <style>
+
+    </style>
+
 
 
 </head>
 <body ng-controller="AppCtrl">
+
+<div class="notifications top-right" growl data="notification.getAlert()" delay="6000"></div>
 
     <div class="navbar navbar-fixed-top navbar-inverse">
         <div class="navbar-inner">

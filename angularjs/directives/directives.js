@@ -332,7 +332,7 @@ app.directive('graph', function(graph){
     }
 });
 */
-app.directive('graph', function(graph){
+app.directive('graph', function(){
 
     return {
         restrict : 'A',
@@ -353,12 +353,20 @@ app.directive('graph', function(graph){
                     .attr("pointer-events", "all")
                     .attr("viewBox", "0 0 " + width + " " + height )
                     .attr("preserveAspectRatio", "xMidYMid meet")
-                    .call(d3.behavior.zoom().scaleExtent([0.4, 3]).on("zoom", scale))
+                    .call(d3.behavior.zoom()
+                        .scaleExtent([0.4, 3])
+                        .on("zoom", function() {
+                            svg.attr("transform", "translate(" + d3.event.translate +
+                                ")scale(" + d3.event.scale + ")");
+                        }))
                     .append('svg:g');
                 svg.append('svg:rect')
                     .attr('width', width)
                     .attr('height', height)
                     .attr('fill', 'rgba(1,1,1,0)');
+                    //.call(d3.behavior.zoom().scaleExtent([0.4, 3]).on("zoom", scale));
+
+
                 svg.append("svg:defs").selectAll("marker")
                     .data(["conditional","unconditional"])
                     .enter().append("svg:marker")
@@ -454,8 +462,6 @@ app.directive('graph', function(graph){
                     newNodes = node.enter().append("g")
                         .attr("class", "node")
                         .attr("id", function(d) { return "node-" + d.id})
-                        .call(force.drag)
-
                         .on("mouseover", mouseover)
                         .on("mouseout", mouseout)
                         .on("click", click)
@@ -463,7 +469,8 @@ app.directive('graph', function(graph){
                             // todo figure out how to add an attribute class instead.
                             .style({display:'block',background:'rgba(0, 0, 0, 0.5)',color:'white',padding:'10px'})
                             .text(function(d, i){ return d.title; })
-                        );
+                        )
+                        .call(force.drag);
                     newNodes.append("circle")
                         //.style("fill", function(d) { return d.color; })
                         // todo add logic for color and highlight instead of blindly adding classes that don't exist
@@ -829,6 +836,102 @@ app.directive('redactor', function () {
     };
 });
 */
+
+app.directive('growl', function(){
+
+    return {
+        restrict : 'A',
+        scope : {
+            data : '=',
+            delay : '@'
+        },
+        link : function (scope,element) {
+console.log("in link");
+            (function ($) {
+                console.log("in notification");
+                var Notification = function (element, options) {
+                    // Element collection
+                    this.$element = $(element);
+                    this.$note    = $('<div class="alert"></div>');
+                    this.options  = $.extend(true, {}, $.fn.notify.defaults, options);
+                    this._link    = null;
+
+                    // Setup from options
+                    if (this.options.transition)
+                        if (this.options.transition === 'fade')
+                            this.$note.addClass('in').addClass(this.options.transition);
+                        else this.$note.addClass(this.options.transition);
+                    else this.$note.addClass('fade').addClass('in');
+
+                    if (this.options.type)
+                        this.$note.addClass('alert-' + this.options.type);
+                    else this.$note.addClass('alert-success');
+
+                    if (this.options.message)
+                        if (typeof this.options.message === 'string')
+                            this.$note.html(this.options.message);
+                        else if (typeof this.options.message === 'object')
+                            if (this.options.message.html)
+                                this.$note.html(this.options.message.html);
+                            else if (this.options.message.text)
+                                this.$note.text(this.options.message.text);
+
+                    if (this.options.closable)
+                        this._link = $('<a class="close pull-right">&times;</a>'),
+                            $(this._link).on('click', $.proxy(Notification.onClose, this)),
+                            this.$note.prepend(this._link);
+
+                    return this;
+                };
+
+                Notification.onClose = function () {
+                    this.options.onClose();
+                    $(this.$note).remove();
+                    this.options.onClosed();
+                };
+
+                Notification.prototype.show = function () {
+                    if (this.options.fadeOut.enabled)
+                        this.$note.delay(this.options.fadeOut.delay || 3000).fadeOut('slow', $.proxy(Notification.onClose, this));
+
+                    this.$element.append(this.$note);
+                    this.$note.alert();
+                };
+
+                Notification.prototype.hide = function () {
+                    if (this.options.fadeOut.enabled)
+                        this.$note.delay(this.options.fadeOut.delay || 3000).fadeOut('slow', $.proxy(Notification.onClose, this));
+                    else Notification.onClose.call(this);
+                };
+
+                $.fn.notify = function (options) {
+                    return new Notification(this, options);
+                };
+
+                $.fn.notify.defaults = {
+                    type: 'info',
+                    closable: true,
+                    transition: 'fade',
+                    fadeOut: {
+                        enabled: true,
+                        delay: 3000
+                    },
+                    message: null,
+                    onClose: function () {},
+                    onClosed: function () {}
+                }
+            })(window.jQuery);
+
+            scope.$watch('data', function(data) {
+                if (data && data.message) {
+                    var delay = (scope.delay || 3000);
+                    data.type = (data.type || 'info');
+                    element.notify({ message: data.message, type: data.type, fadeOut: {enabled: true, delay: delay}}).show();
+                }
+            });
+        } // end link
+    }
+});
 
 app.directive('wysiwyg', function () {
     return {

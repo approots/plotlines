@@ -20,9 +20,7 @@ login.config(function ($httpProvider) {
             if (response.status == 401)
             {
                 var deferred = $q.defer();
-                // If request is not a login request, then save it so it will run after login.
-                // No. What if login was explicitly clicked by the user!
-                // Login page shouldn't return a 401?
+                // Login page shouldn't return a 401 - returns a 400 instead.
                 $rootScope.failedRequest = {
                     config: response.config,
                     deferred: deferred
